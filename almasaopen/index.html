@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if fail %}
+<p id="fail"><span>{{ fail }}</span></p>
+{% endif %}
+<h2>Registrering</h2>
+{% if currentuser %}
+<form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
+	<div>
+		<div class="fake_input"><p class="fake_button">Startfil</p><p class="fake_content" id="startfile">&larr; välj fil</p></div>
+		<input type="file" name="start" class="real_input" />
+	</div>
+	<div>
+		<div class="fake_input"><p class="fake_button">Målfil</p><p class="fake_content" id="finishfile">&larr; välj fil</p></div>
+		<input type="file" name="finish" class="real_input" />
+	</div>
+	<div><input type="submit" value="Registrera"></div>
+</form>
+{% else %}
+<div id="login">
+	<a href="{{login}}">Logga in</a> för att kunna registrera tider.<br/>Du behöver ett Google konto, som är gratis att registrera <a href="https://www.google.com/accounts/NewAccount?continue=http%3A%2F%2Fwww.google.se%2F&hl=sv">här</a>.
+</div>
+{% endif %}
+<hr/>
+<div id="top5">
+	<h2>Top 5!</h2>
+	<ol>
+		{% for race in races %}
+			<li><a href="/showrace/{{race.key}}">{{ race.totalTime|format }}</a> - <span>{{ race.user }}</span></li>
+		{% endfor %}
+	</ol>
+</div>
+<hr/>
+<div id="info">
+	<p>Detta är cykeltävlingen för alla... fixiekidz, lvg-eliten, hundar, veganer, laktosintolleranta, Zlatan osv. ALLA SKA MED! Starten går precis när du själv vill, orkar och har tid. Tävlingen avgörs här, kontinuerligt.</p>
+	<p>Reglerna är enkla och går att läsa <a href="/info">här</a>.</p>
+</div>
+
+{% endblock %}
