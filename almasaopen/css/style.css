@@ -257,6 +257,7 @@ html {
     }
 }
 
+
 #ulform > * {
     text-align:center;
 }
@@ -339,13 +340,14 @@ tr:nth-child(even) {
 }
 
 #fail span {
-    padding:10px;
-    background-color: #E89379;
-    border: 1px solid #FF0000;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px; /* future proofing */
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+    /*padding:10px;*/
+    /*background-color: #E89379;*/
+    color:red;
+    /*border: 1px solid #FF0000;*/
+    /*-moz-border-radius: 10px;*/
+    /*-webkit-border-radius: 10px;*/
+    /*border-radius: 10px; [> future proofing <]*/
+    /*-khtml-border-radius: 10px; [> for old Konqueror browsers <]*/
 }
 
 hr {

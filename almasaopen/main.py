@@ -38,7 +38,7 @@ class MainHandler(webapp.RequestHandler):
         if fail:
             template_values['fail'] = fail
         if user:
-            template_values['currentuser'] = users.get_current_user()
+            template_values['currentuser'] = users.get_current_user().nickname()
             template_values['logout'] = users.create_logout_url('/')
         else:
             template_values['login'] = users.create_login_url('/')

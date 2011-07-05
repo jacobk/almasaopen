@@ -2,23 +2,27 @@
 
 */
 
-$("input[name=start]").change(function() {
-	$("#startfile").text($(this).val());
-})
-
-$("input[name=finish]").change(function() {
-	$("#finishfile").text($(this).val());
-})
 
 
 
 $(document).ready(function () {
-    $("form").change(function() {
+    $('input[type="file"]').change(function(evt) {
         if ($('input[name="start"]').val() != "" && $('input[name="finish"]').val() != "" ) {
             $('input[type="submit"]').removeAttr("disabled").focus().val("Registrera!");
         }
+        if (!getFileType(evt).match('image.*')) {
+            alert(evt.target.files[0].name + " är inte ett foto!");
+            evt.target.value = "";
+        }
+        return false;
     });
 });
+
+
+function getFileType(evt) {
+    var files = evt.target.files; // FileList object
+    return files[0].type;
+}
 
 
 
