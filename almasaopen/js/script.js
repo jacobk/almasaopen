@@ -12,13 +12,13 @@ $("input[name=finish]").change(function() {
 
 
 
-
-
-
-
-
-
-
+$(document).ready(function () {
+    $("form").change(function() {
+        if ($('input[name="start"]').val() != "" && $('input[name="finish"]').val() != "" ) {
+            $('input[type="submit"]').removeAttr("disabled").focus().val("Registrera!");
+        }
+    });
+});
 
 
 

@@ -257,6 +257,10 @@ html {
     }
 }
 
+#ulform > * {
+    text-align:center;
+}
+
 #almasa_oppna {
     position:relative;
     z-index:5;
@@ -273,68 +277,6 @@ html {
     top:0;
     right:0;
     padding:6px;
-}
-
-#ulform div label {
-    width:130px;
-    text-align: right;
-    display:block;
-    float:left;
-}
-
-.real_input {
-    position:relative;
-    width:250px;
-    height:20px;
-    z-index:2;
-    opacity: 0;
-    -moz-opacity: 0;
-    filter:alpha(opacity=0);
-}
-
-.fake_input {
-    position:absolute;
-    z-index:1;
-    width:250px;
-    height:20px;
-    text-align: left;
-}
-
-.fake_content {
-    width:180px;
-    margin-left:10px;
-    height:20px;
-    position:relative;
-    float:left;
-    top:-20px;
-    line-height:20px;
-}
-
-.fake_button {
-    width:50px;
-    height:20px;
-    border: 1px solid #999;
-    position:relative;
-    float:left;
-    top:-20px;
-    line-height:20px;
-    text-align: center;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px; /* future proofing */
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
-/*    background-color: #DDD;*/
-}
-
-#ulform {
-    width:400px;
-    margin:auto;
-    text-align: center;
-}
-
-#ulform > div {
-    width:250px;
-    margin:10px auto;
 }
 
 #main {
@@ -431,6 +373,40 @@ p {
     font-size: 20px;
     color:red;
 }
+
+
+.button {
+   border:none;
+   background: #9c9c9c;
+   background: -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#9c9c9c));
+   background: -moz-linear-gradient(top, #f0f0f0, #9c9c9c);
+   padding: 10.5px 21px;
+   -webkit-border-radius: 7px;
+   -moz-border-radius: 7px;
+   border-radius: 7px;
+   text-shadow: rgba(255,255,255,.4) 1px 1px 0;
+   color: #3d3d3d;
+   font-size: 24px;
+   text-decoration: none;
+   font-family: 'Quattrocento', arial, serif;
+   vertical-align: middle;
+   }
+.button:hover {
+   background: #CCC;
+   /*color: #ffffff;*/
+   }
+.button:active {
+   background: #AAA;
+   }
+
+.error {
+    color:red;
+    border:none;
+    margin-left:20px;
+}
+
+
+
 
 
 

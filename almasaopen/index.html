@@ -6,17 +6,22 @@
 {% endif %}
 <h2>Registrering</h2>
 {% if currentuser %}
+
+
 <form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
-	<div>
-		<div class="fake_input"><p class="fake_button">Startfil</p><p class="fake_content" id="startfile">&larr; välj fil</p></div>
-		<input type="file" name="start" class="real_input" />
-	</div>
-	<div>
-		<div class="fake_input"><p class="fake_button">Målfil</p><p class="fake_content" id="finishfile">&larr; välj fil</p></div>
-		<input type="file" name="finish" class="real_input" />
-	</div>
-	<div><input type="submit" value="Registrera"></div>
+    <p>
+        <label for="start">Välj startfil &rarr;</label>
+        <input type="file" id="start" name="start" class="required" />
+    </p>
+    <p>
+        <label for="finish">Välj målfil &rarr;</label>
+        <input type="file" id="finish" name="finish" class="required" />
+    </p>
+    <div id="submitbutton">
+        <input disabled="disabled" id="submitbtn" type="submit" value="Välj start och målfil!">
+    </div>
 </form>
+
 {% else %}
 <div id="login">
 	<a href="{{login}}">Logga in</a> för att kunna registrera tider.<br/>Du behöver ett Google konto, som är gratis att registrera <a href="https://www.google.com/accounts/NewAccount?continue=http%3A%2F%2Fwww.google.se%2F&hl=sv">här</a>.
