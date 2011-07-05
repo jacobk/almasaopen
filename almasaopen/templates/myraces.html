@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table border="0" id="myraces">
+	<tr><th>Datum</th><th>Starttid</th><th>Måltid</th><th>Totaltid</th><th></th><th></th></tr>
+	{% for race in races %}
+	<tr>
+		<td>{{filters.formatd(race.start_time)}}</td>
+		<td>{{filters.formatt(race.start_time)}}</td>
+		<td>{{filters.formatt(race.finish_time)}}</td>
+		<td>{{filters.format(race.total_time)}}</td>
+		<td><a href="/showrace/{{race.key()}}">Visa loppet</a></td>
+		<td><a href="/removerace/{{race.key()}}">Radera loppet</a></td>
+	</tr>
+	{% end %}
+</table>
+{% end %}

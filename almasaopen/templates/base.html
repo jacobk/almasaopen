@@ -50,18 +50,18 @@
 				<h1 id="almasa_oppna">Almåsa Öppna</h1>
 			</hgroup>
 				<nav>
-				{% if currentuser %}
-					Inloggad som: {{currentuser}}
+				{% if current_user %}
+					Inloggad som: {{current_user}}
 					<a href="/myraces">Mina lopp</a> | 
 					<a href="{{ logout }}">Logga ut</a> | 
 					<a href="/info">Regler</a> | 
-				{% endif %}
+				{% end %}
 					<a href="/">Startsida</a>
 				</nav>
 		</header>
 		
 		<div id="main">
-			{% block content %}{% endblock %}
+			{% block content %}{% end %}
 			<hr/>
 			<footer>
 				<p>Brought to you by øl and de-cadence! &copy;</p>

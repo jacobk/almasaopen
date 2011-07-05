@@ -15,3 +15,9 @@ indexes:
   - name: user
   - name: startTime
     direction: desc
+
+- kind: Race
+  properties:
+  - name: user
+  - name: start_time
+    direction: desc

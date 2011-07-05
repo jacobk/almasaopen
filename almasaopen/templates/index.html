@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-
 {% block content %}
 {% if fail %}
 <p id="fail"><span>{{ fail }}</span></p>
-{% endif %}
+{% end %}
 <h2>Registrering</h2>
-{% if currentuser %}
+{% if current_user %}
 
 
 <form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
@@ -26,14 +25,14 @@
 <div id="login">
 	<a href="{{login}}">Logga in</a> för att kunna registrera tider.<br/>Du behöver ett Google konto, som är gratis att registrera <a href="https://www.google.com/accounts/NewAccount?continue=http%3A%2F%2Fwww.google.se%2F&hl=sv">här</a>.
 </div>
-{% endif %}
+{% end %}
 <hr/>
 <div id="top5">
 	<h2>Top 5!</h2>
 	<ol>
 		{% for race in races %}
-			<li><a href="/showrace/{{race.key}}">{{ race.totalTime|format }}</a> - <span>{{ race.user }}</span></li>
-		{% endfor %}
+			<li><a href="/showrace/{{race.key()}}">{{ filters.format(race.total_time) }}</a> - <span>{{ race.user }}</span></li>
+		{% end %}
 	</ol>
 </div>
 <hr/>
@@ -42,4 +41,4 @@
 	<p>Reglerna är enkla och går att läsa <a href="/info">här</a>.</p>
 </div>
 
-{% endblock %}
+{% end %}

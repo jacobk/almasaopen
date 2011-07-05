@@ -1,8 +1,4 @@
-from google.appengine.ext import webapp
 from datetime import datetime, timedelta, date
-
-
-register = webapp.template.create_template_register()
 
 def format(time):
     """Format seconds to HH:MM:SS format"""
@@ -15,8 +11,3 @@ def formatd(indate):
 def formatt(indate):
     """Format datetime to just date"""
     return indate.strftime("%H:%M:%S")
-    
-    
-register.filter(format)
-register.filter(formatd)
-register.filter(formatt)
