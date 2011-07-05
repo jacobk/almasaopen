@@ -12,6 +12,7 @@ $(document).ready(function () {
         }
         if (!getFileType(evt).match('image.*')) {
             alert(evt.target.files[0].name + " är inte ett foto!");
+            $('input[type="submit"]').attr("disabled", "disabled").val("Välj start och målfil");
             evt.target.value = "";
         }
         return false;
