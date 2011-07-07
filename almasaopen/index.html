@@ -12,10 +12,12 @@
     <p>
         <label for="start">Välj startfil &rarr;</label>
         <input type="file" id="start" name="start" class="required" />
+        <input type="number" name="startrot" id="startrot" />
     </p>
     <p>
         <label for="finish">Välj målfil &rarr;</label>
         <input type="file" id="finish" name="finish" class="required" />
+        <input type="number" name="finishrot" id="finishrot" />
     </p>
     <output id="list"><ul></ul></output>
 
@@ -23,7 +25,9 @@
         <input disabled="disabled" id="submitbtn" type="submit" value="Välj start och målfil!">
     </div>
 </form>
-
+<div id="photothumbs">
+    <canvas width=0 height=0 class="start"></canvas><canvas width=0 height=0 class="finish"></canvas>
+</div>
 {% else %}
 <div id="login">
 	<a href="{{login}}">Logga in</a> för att kunna registrera tider.<br/>Du behöver ett Google konto, som är gratis att registrera <a href="https://www.google.com/accounts/NewAccount?continue=http%3A%2F%2Fwww.google.se%2F&hl=sv">här</a>.

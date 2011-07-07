@@ -407,8 +407,26 @@ p {
     margin-left:20px;
 }
 
+#photothumbs {
+    text-align:center;
+    display:none;
+    height:165px;
+}
 
+#photothumbs img {
+    height:125px;
+    margin:20px;
+}
 
+canvas {
+    /*border:1px solid #777;*/
+    display:inline;
+    margin:10px;
+}
+
+input[type="number"] {
+    display:none;
+}
 
 
 

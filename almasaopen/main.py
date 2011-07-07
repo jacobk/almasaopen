@@ -47,24 +47,29 @@ class MainHandler(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 
+
 class UploadHandler(webapp.RequestHandler):
     """Handler for adding a race to the datastore"""
     def post(self):
         race = Race()
         try:
+            startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
+            race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
             startPhoto = images.Image(self.request.get("start"))
             startPhoto.resize(width=200, height=200)
             startPhoto.im_feeling_lucky()
+            if self.request.get("startrot") :
+                startPhoto.rotate(int(self.request.get("startrot")));
             race.startPhoto = db.Blob(startPhoto.execute_transforms())
-            startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
-            race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
 
+            finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
+            race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
             finishPhoto = images.Image(self.request.get("finish"))
             finishPhoto.resize(width=200, height=200)
             finishPhoto.im_feeling_lucky()
+            if self.request.get("finishrot") :
+                finishPhoto.rotate(int(self.request.get("finishrot")));
             race.finishPhoto = db.Blob(finishPhoto.execute_transforms())
-            finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
-            race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
         except ValueError:
             self.redirect('/?fail=Oj! Bilderna har ej korrekt EXIF data.')
         else:
