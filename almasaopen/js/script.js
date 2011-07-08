@@ -38,6 +38,11 @@ $(document).ready(function () {
         $(this).rotate();
     });
     
+    $('input[type="submit"]').click(function() {
+        $(this).val("Laddar upp filer").attr("disabled", "disabled");
+        $("#ulform").submit();
+    });
+    
     $('input[type="file"]').change(function(evt) {
         if ($('input[name="start"]').val() != "" && $('input[name="finish"]').val() != "" ) {
             $('input[type="submit"]').removeAttr("disabled").focus().val("Registrera!");
@@ -96,16 +101,6 @@ function createThumb(evt) {
         reader.readAsDataURL(file);
     }
 }
-
-//$("#ulform").submit(function() {
-    //$.post('/upload',
-        //{
-            //start: $("canvas.start").get(0).getContext('2d').getImageData(0, 0, 200, 200).data,
-            //finish: $("canvas.finish").get(0).getContext('2d').getImageData(0, 0, 200, 200).data
-        //},
-        //function(data) {});
-    //return false;
-//});
 
 
 
