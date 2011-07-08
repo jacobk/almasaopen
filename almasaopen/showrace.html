@@ -3,14 +3,17 @@
 {% block content %}
 <div id="race_images">
 	<h2>{{username}}</h2><h2>{{starttime|formatd}}</h2>
-	<div class="race_images_inner">
-		<p>Startfoto</p>
-		<img src="/img?type=start&amp;race_id={{ id }}" alt="Startfoto" />
-	</div>
-	<div class="race_images_inner">
-		<p>Målfoto</p>
-		<img src="/img?type=finish&amp;race_id={{ id }}" alt="Målfoto" />
-	</div>
+    <table id="showracetable" border="0">
+        <tr><th>Startfoto</th><th>Målfoto</th></tr>
+        <tr>
+            <td>
+                <img src="/img?type=start&amp;race_id={{ id }}" alt="Startfoto" />
+            </td>
+            <td>
+                <img src="/img?type=finish&amp;race_id={{ id }}" alt="Målfoto" />
+            </td>
+        </tr>
+    </table>
 	<h2>Totaltid: {{ totaltime|format }}!</h2>
 </div>
 {% endblock %}

@@ -313,7 +313,7 @@ footer {
     text-align: left;
 }
 
-tr:nth-child(even) {
+#myraces tr:nth-child(even) {
    background-color: #ccc;
 }
 
@@ -321,33 +321,20 @@ tr:nth-child(even) {
     margin:auto;
 }
 
-#race_images {
-    width:500px;
+#showracetable {
     margin:auto;
 }
 
-.race_images_inner {
-    width:50%;
-    float:left;
-    text-align: center;
-    margin: 20px 0px;
+#showracetable td {
+    padding:20px;
 }
 
 #fail {
     text-align: center;
-    line-height:50px;
-    color:black;
 }
 
 #fail span {
-    /*padding:10px;*/
-    /*background-color: #E89379;*/
     color:red;
-    /*border: 1px solid #FF0000;*/
-    /*-moz-border-radius: 10px;*/
-    /*-webkit-border-radius: 10px;*/
-    /*border-radius: 10px; [> future proofing <]*/
-    /*-khtml-border-radius: 10px; [> for old Konqueror browsers <]*/
 }
 
 hr {
