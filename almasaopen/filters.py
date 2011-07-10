@@ -13,7 +13,7 @@ def formatd(indate):
     return indate.strftime("%Y-%m-%d")
   
 def formatt(indate):
-    """Format datetime to just date"""
+    """Format datetime to just time"""
     return indate.strftime("%H:%M:%S")
     
     

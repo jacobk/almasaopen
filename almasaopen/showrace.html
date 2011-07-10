@@ -15,5 +15,19 @@
         </tr>
     </table>
 	<h2>Totaltid: {{ totaltime|format }}!</h2>
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="commentheader"><strong>{{ comment.user }}</strong> - {{ comment.time|formatd }} klockan {{ comment.time|formatt }}</p>
+            <p>{{ comment.comment }}</p>
+            {% ifequal comment.user currentuser %}
+            <a href="#" onclick='deleteComment("{{ comment.key }}", "{{ id }}");$(this).parent().remove(); return false;' >Radera</a>
+            {% endifequal %}
+        </div>
+    {% endfor %}
+    <form id="commentform" action="/addcomment/{{ id }}" method="post" accept-charset="utf-8">
+        <textarea name="comment" cols=70 rows=6 placeholder="Kommentera loppet!"></textarea>
+    
+    <p><input type="submit" value="Kommentera"></p>
+    </form>
 </div>
 {% endblock %}

@@ -34,11 +34,12 @@ jQuery.fn.rotate = function() {
 
 $(document).ready(function () {
 
+    $("canvas").hide();
     $("#photothumbs > *").click(function() {
         $(this).rotate();
     });
     
-    $('input[type="submit"]').click(function() {
+    $('#ulform input[type="submit"]').click(function() {
         $(this).val("Laddar upp filer").attr("disabled", "disabled");
         $("#ulform").submit();
     });
@@ -52,7 +53,11 @@ $(document).ready(function () {
             $('input[type="submit"]').attr("disabled", "disabled").val("Välj start och målfil");
             evt.target.value = "";
         } else {
-            createThumb(evt);
+            if (window.File && window.FileReader && window.FileList) {
+                createThumb(evt);
+            } else {
+                $("#photothumbs").show().text("I Chrome, Firefox och Opera kan man rotera foton!").css("height", "auto");
+            }
         }
         return false;
     });
@@ -73,27 +78,29 @@ function createThumb(evt) {
             if ($("#photothumbs img#foo"+evt.target.name).length) {
                 $("#photothumbs img#foo"+evt.target.name).remove();
             }
-            $("canvas." + evt.target.name).show();
             var image = $("<img>")
                         .attr("src", e.target.result)
                         .hide()
                         .attr("id", "foo"+evt.target.name)
                         .get(0);
             $("#photothumbs").append(image);
-            image.onload = function() {
-                var canvas = $("#photothumbs ." + evt.target.name).
-                            attr('rot', 0).
-                            attr('height', 125).
-                            attr('width', (image.width/image.height)*125);
-                var canvasContext = canvas.get(0).getContext('2d');
+            if (!!document.createElement('canvas').getContext) {
+                $("canvas." + evt.target.name).show();
+                image.onload = function() {
+                    var canvas = $("#photothumbs ." + evt.target.name).
+                                attr('rot', 0).
+                                attr('height', 125).
+                                attr('width', (image.width/image.height)*125);
+                    var canvasContext = canvas.get(0).getContext('2d');
 
-                canvasContext.drawImage(image, 0, 0, (image.width/image.height)*125, 125);
+                    canvasContext.drawImage(image, 0, 0, (image.width/image.height)*125, 125);
 
+                };
             };
             
         };
     })(file);
-    if ($("#photothumbs > canvas").is(":empty")) {
+    if (!$("#photothumbs").is(":visible")) {
         $("#photothumbs").slideDown(1000, function() {
             reader.readAsDataURL(file);
         });
@@ -102,7 +109,14 @@ function createThumb(evt) {
     }
 }
 
+function deleteComment (commentid, raceid) {
+    jQuery.post('/removecomment',
+            {
+                commentid: commentid,
+                raceid: raceid
+            });
 
+}
 
 
 

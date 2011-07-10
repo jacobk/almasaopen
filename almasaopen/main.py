@@ -17,7 +17,14 @@ class Race(db.Model):
     finishTime = db.DateTimeProperty()
     totalTime = db.IntegerProperty()
     user = db.UserProperty()
-        
+
+class Comment(db.Model):
+    """Datastore model for comments to a race"""
+    user = db.UserProperty()
+    time = db.DateTimeProperty()
+    comment = db.TextProperty()
+    ref = db.ReferenceProperty(Race, collection_name="comments")
+
 class MainHandler(webapp.RequestHandler):
     def get(self):
         template_values = {}
@@ -78,7 +85,7 @@ class UploadHandler(webapp.RequestHandler):
             race.totalTime = totalTime.seconds
             
             race.user = users.get_current_user()
-            if race.finishTime<race.startTime:
+            if race.finishTime<=race.startTime:
                 self.redirect('/?fail=Oj! Bilderna i fel ordning.')
             else:
                 race.put()
@@ -96,6 +103,24 @@ class GetImage(webapp.RequestHandler):
         if photo_type == "finish":
             self.response.out.write(race.finishPhoto)
 
+class AddComment(webapp.RequestHandler):
+    """Handler for comments"""
+    def post(self, *ar):
+        comment = Comment()
+        comment.user = users.get_current_user()
+        comment.comment = self.request.get('comment')
+        comment.time = datetime.now()
+        comment.ref = db.get(ar[0])
+        comment.put()
+        self.redirect('/showrace/' + ar[0])
+
+class RemoveComment(webapp.RequestHandler):
+    """docstring for RemoveComment"""
+    def post(self):
+        comment = db.get(self.request.get("commentid"))
+        if users.get_current_user() == comment.user :
+            comment.delete()
+
 class ShowRace(webapp.RequestHandler):
     """Handler to show a specific race"""
     def get(self, *ar):
@@ -103,13 +128,14 @@ class ShowRace(webapp.RequestHandler):
         template_values = {}
         
         template_values['id'] = ar[0]
-        template_values['username'] = race.user.nickname()
+        template_values['username'] = race.user
         template_values['starttime'] = race.startTime
         template_values['finishtime'] = race.finishTime
         template_values['totaltime'] = race.totalTime
         template_values['currentuser'] = users.get_current_user()
         template_values['logout'] = users.create_logout_url('/')
-        
+        template_values['comments'] = race.comments
+
         path = os.path.join(os.path.dirname(__file__), 'showrace.html')
         self.response.out.write(template.render(path, template_values))
         
@@ -167,6 +193,8 @@ def main():
                                         ('/upload', UploadHandler),
                                         ('/img', GetImage),
                                         ('/showrace/(.*)', ShowRace),
+                                        ('/addcomment/(.*)', AddComment),
+                                        ('/removecomment', RemoveComment),
                                         ('/removerace/(.*)', RemoveRace),
                                         ('/myraces', MyRaces),
                                         ('/info', Information)],
