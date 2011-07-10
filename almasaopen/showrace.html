@@ -15,6 +15,11 @@
         </tr>
     </table>
 	<h2>Totaltid: {{ totaltime|format }}!</h2>
+    {% if extra %}
+    <p id="extralink">{{ extra }}</p>
+    <textarea placeholder="Extra extra!" name=extra></textarea>
+    {% endif %}
+    <h2>Kommentarer</h2>
     {% for comment in comments %}
         <div class="comment">
             <p class="commentheader"><strong>{{ comment.user }}</strong> - {{ comment.time|formatd }} klockan {{ comment.time|formatt }}</p>
@@ -24,10 +29,14 @@
             {% endifequal %}
         </div>
     {% endfor %}
+    {% if currentuser %}
     <form id="commentform" action="/addcomment/{{ id }}" method="post" accept-charset="utf-8">
         <textarea name="comment" cols=70 rows=6 placeholder="Kommentera loppet!"></textarea>
     
     <p><input type="submit" value="Kommentera"></p>
     </form>
+    {% else %}
+    <h3>Logga in för att kunna kommentera!</h3>
+    {% endif %}
 </div>
 {% endblock %}

@@ -414,14 +414,29 @@ input[type="number"] {
     display:none;
 }
 
+textarea[name=extra] {
+    height:100px;
+    display:none;
+    width:300px;
+}
+
+#extralink {
+    text-align:center;
+    font-size:15px;
+}
+
 .comment {
-    background:#eee;
     width:500px;
     margin:10px auto;
-    padding:5px;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+}
+
+.comment+.comment::before {
+    content:"✿";
+    font-size:30px;
+    width:500px;
+    margin:30px;
+    display:block;
+    text-align:center;
 }
 
 .commentheader {
@@ -430,6 +445,12 @@ input[type="number"] {
 #commentform {
     text-align:center;
 }
+
+h3 {
+    text-align:center;
+    font-weight:normal;
+}
+
 
 
 

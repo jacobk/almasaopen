@@ -17,6 +17,7 @@ class Race(db.Model):
     finishTime = db.DateTimeProperty()
     totalTime = db.IntegerProperty()
     user = db.UserProperty()
+    extra = db.TextProperty()
 
 class Comment(db.Model):
     """Datastore model for comments to a race"""
@@ -84,6 +85,8 @@ class UploadHandler(webapp.RequestHandler):
             
             race.totalTime = totalTime.seconds
             
+            if self.request.get("extra") :
+                race.extra = self.request.get("extra")
             race.user = users.get_current_user()
             if race.finishTime<=race.startTime:
                 self.redirect('/?fail=Oj! Bilderna i fel ordning.')
@@ -135,6 +138,7 @@ class ShowRace(webapp.RequestHandler):
         template_values['currentuser'] = users.get_current_user()
         template_values['logout'] = users.create_logout_url('/')
         template_values['comments'] = race.comments
+        template_values['extra'] = race.extra
 
         path = os.path.join(os.path.dirname(__file__), 'showrace.html')
         self.response.out.write(template.render(path, template_values))

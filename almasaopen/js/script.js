@@ -34,6 +34,12 @@ jQuery.fn.rotate = function() {
 
 $(document).ready(function () {
 
+    $("#extra").click(function() {
+        $("textarea[name=extra]").show().focus();
+        $(this).hide();
+        return false;
+    });
+
     $("canvas").hide();
     $("#photothumbs > *").click(function() {
         $(this).rotate();
