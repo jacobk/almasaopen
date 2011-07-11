@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if fail %}
+<p id="fail"><span>{{ fail }}</span></p>
+{% endif %}
+<div id="welcome" class="text-content grid_6">
+  <h3 class="">
+    Cykellopp, jämt <u>o</u> ständigt!
+  </h3>
+  <p>
+    Detta är cykeltävlingen för alla! Hipsters, landsvägs-eliten, hundar, veganer, laktosintolleranta, Zlatan, fan och hans moster. <strong>ALLA SKA MED! HÄR FÅR NI EXTRA!</strong> Starten går precis när du själv vill, orkar och har tid. Tävlingen avgörs här, kontinuerligt.
+  </p>
+  <p class="last">
+    Reglerna är enkla och går att läsa <a href="#">här</a>. Lycka till!
+  </p>
+
+  <h3>Registrering</h3>
+{% if currentuser %}
+<form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
+    <p>
+        <label for="start">Välj startfil &rarr;</label>
+        <input type="file" id="start" name="start" class="required" />
+        <input type="number" name="startrot" id="startrot" />
+    </p>
+    <p>
+        <label for="finish">Välj målfil &rarr;</label>
+        <input type="file" id="finish" name="finish" class="required" />
+        <input type="number" name="finishrot" id="finishrot" />
+    </p>
+    <p>
+        <textarea placeholder="Extra extra!" name=extra></textarea>
+        <a href="#" id="extra">Lägg till en kommentar, t.ex. Runkeeper länk (frivilligt)</a>
+    </p>
+    <div id="submitbutton">
+        <input disabled="disabled" id="submitbtn" type="submit" value="Välj start och målfil!">
+    </div>
+</form>
+<div id="photothumbs">
+    <p>Klicka på fotot för att rotera</p>
+    <canvas width=0 height=0 class="start"></canvas><canvas width=0 height=0 class="finish"></canvas>
+</div>
+{% else %}
+  <p class="last"><a href="#">Logga in</a> för att kunna registrera tider.
+  Du behöver ett Google konto, som är gratis att registrera <a href="https://www.google.com/accounts/NewAccount?continue=http%3A%2F%2Fwww.google.se%2F&hl=sv">här</a>.</p>
+{% endif %}
+
+
+  <h3>Anslagstavlan</h3>
+  <p>Passa på att egga varandra i en hederlig gästbok i sann 90-tals anda.</p>
+  <p class="last"><em>Kommer inom kort</em></p>
+  <center><img src="images/small_seal.png" /></center>
+</div>
+
+{% endblock %}
+
+<!-- <div id="scoreboard" class="grid_6">
+  <div class="clear"></div>
+  <div class="entry leader">
+    <div class="avatar grid_2 alpha">
+        <!-- <img src="http://placekitten.com/140/140"> -->
+        <img src="images/martin_raw.jpeg">
+    </div>
+    <div class="grid_4 omega">
+      <div class="timestamp">00:32:52</div>
+      <div class="name">Martin Lang</div>
+      <div class="byline">Vägens konug sedan 23 dagar</div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  
+  <div class="entry runner-up">
+    <div class="position grid_1 alpha">
+      2
+    </div>
+    <div class="avatar grid_1 ">
+      <img src="images/kalle_raw.jpeg">
+    </div>
+    <div class="grid_3">
+      <div class="timestamp">00:35:07</div>
+      <div class="name">Karl Bratt</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+  
+  <div class="entry runner-up">
+    <div class="position grid_1 alpha">
+      3
+    </div>
+    <div class="avatar grid_1 ">
+      <img src="images/jacob_raw.jpeg">
+    </div>
+    <div class="grid_3">
+      <div class="timestamp">00:38:58</div>
+      <div class="name">Jacob Kristhammar</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry runner-up">
+    <div class="position grid_1 alpha">
+      4
+    </div>
+    <div class="avatar grid_1 ">
+        <img src="http://placekitten.com/60/60">
+    </div>
+    <div class="grid_3">
+      <div class="timestamp">00:39:58</div>
+      <div class="name">Douglas Frisk</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry runner-up">
+    <div class="position grid_1 alpha">
+      5
+    </div>
+    <div class="avatar grid_1 ">
+        <img src="http://placekitten.com/60/60">
+    </div>
+    <div class="grid_3">
+      <div class="timestamp">00:59:58</div>
+      <div class="name">Åke Vilse</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     6
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">00:59:58</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">John Doe</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     7
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:00:58</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Boxxe</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     8
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:10:34</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Rebecca Black</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     9
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:11:22</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Jane Roe</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     10
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:23:45</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Håkan Juholt</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     11
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:24:35</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Johanna Gripenhammar</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="entry noob">
+    <div class="position grid_1 alpha">
+     12
+    </div>
+    <div class="grid_1">
+      <div class="timestamp">01:24:58</div>
+    </div>
+    <div class="grid_3">
+      <div class="name">Sven-Åke Natt o Dag</div>
+    </div>
+    <div class="details-link grid_1 omega">></div>
+  </div>
+  <div class="clear"></div>
+
+</div> -->

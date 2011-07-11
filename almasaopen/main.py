@@ -26,7 +26,15 @@ class Comment(db.Model):
     comment = db.TextProperty()
     ref = db.ReferenceProperty(Race, collection_name="comments")
 
-class MainHandler(webapp.RequestHandler):
+
+class BaseHandler(webapp.RequestHandler):
+    def render(self, template_name, **kwargs):
+        path = os.path.join(os.path.dirname(__file__), "templates",
+                            template_name)
+        self.response.out.write(template.render(path, kwargs))
+
+
+class MainHandler(BaseHandler):
     def get(self):
         template_values = {}
         user = users.get_current_user()
@@ -50,10 +58,7 @@ class MainHandler(webapp.RequestHandler):
             template_values['logout'] = users.create_logout_url('/')
         else:
             template_values['login'] = users.create_login_url('/')
-        
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
-        self.response.out.write(template.render(path, template_values))
-
+        self.render("index.html", **template_values)
 
 
 class UploadHandler(webapp.RequestHandler):

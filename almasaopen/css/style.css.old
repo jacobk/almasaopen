@@ -224,197 +224,235 @@ button {  width: auto; overflow: visible; }
     Author: 
  */
 
-/* Global */
-
 body {
-  background: #fffffe url("/images/header_fill_01.png") repeat-x;
-  font-family: 'Maven Pro', cursive;
-  font-size: 14px;
+    font-family: 'Quattrocento', arial, serif;
 }
 
-h3 {
-  color: #242322;
-  font-family: 'Josefin Slab', serif;
-  font-size: 30px;
-  font-weight: normal;
-  line-height: 1.5;
-  margin-bottom: 10px;
+html {
+   overflow-x: hidden;
+}
+
+#cloud {
+    position:absolute;
+    top:40px;
+    left:200px;
+    height:100px;
+    z-index:6;
+    -webkit-animation: cloudmove 60s infinite linear;
+}
+
+@-webkit-keyframes cloudmove {
+    from {
+        left:105%;
+    }
+    
+    to {
+        left:-50%;
+    }
+}
+
+
+#ulform > * {
+    text-align:center;
+}
+
+#almasa_oppna {
+    position:relative;
+    z-index:5;
+    font-size: 100px;
+    margin-top:70px;
+    color:#000;
+    font-family: 'Mountains of Christmas', arial, serif;
+    text-align: center;
+    text-shadow: #DDD 4px 4px 4px;
+}
+
+#container header nav {
+    position:absolute;
+    top:0;
+    right:0;
+    padding:6px;
+}
+
+#main {
+    padding:20px;
+    margin:50px 0;
+    background-color: #FFF;
+}
+
+#top5 {
+    width:300px;
+    margin:auto;
+}
+
+h2 {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom:20px;
+}
+
+footer {
+    text-align: center;
+}
+
+#login {
+    text-align: center;
+}
+
+#myraces tr th {
+    width:100px;
+    text-align: left;
+}
+
+#myraces tr:nth-child(even) {
+   background-color: #ccc;
+}
+
+#myraces {
+    margin:auto;
+}
+
+#showracetable {
+    margin:auto;
+}
+
+#showracetable td {
+    padding:20px;
+}
+
+#fail {
+    text-align: center;
+}
+
+#fail span {
+    color:red;
+}
+
+hr {
+    width:500px;
+    margin:20px auto;
+    border-top: 1px dashed #999;
+}
+
+#info {
+    width:500px;
+    margin:auto;
 }
 
 p {
-  margin-bottom: 10px ;
-  line-height: 1.3em;
+    margin: 20px 0px;
 }
 
-p.last {
-  margin-bottom: 30px;
+.fotnot {
+    font-size: 10px;
+    margin: 20px 0px;
 }
 
-/* Header */
-
-#header {
-  background: #FFF url("/images/header_01.png") no-repeat;
-  height: 177px;
-  margin-bottom: 20px;
+#really_remove {
+    text-align: center;
+    font-size: 20px;
+    color:red;
 }
 
-/* Content */
 
-.text-content a:link { 
-  color: #333
-}
-.text-content a:visited { color: #333 }
-.text-content a:hover {
-  background-color: #A7DBD8;
-  color: #333;
-  text-decoration: none;
-}
-.text-content a:active { color: #333 }
+.button {
+   border:none;
+   background: #9c9c9c;
+   background: -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#9c9c9c));
+   background: -moz-linear-gradient(top, #f0f0f0, #9c9c9c);
+   padding: 10.5px 21px;
+   -webkit-border-radius: 7px;
+   -moz-border-radius: 7px;
+   border-radius: 7px;
+   text-shadow: rgba(255,255,255,.4) 1px 1px 0;
+   color: #3d3d3d;
+   font-size: 24px;
+   text-decoration: none;
+   font-family: 'Quattrocento', arial, serif;
+   vertical-align: middle;
+   }
+.button:hover {
+   background: #CCC;
+   /*color: #ffffff;*/
+   }
+.button:active {
+   background: #AAA;
+   }
 
-/* Scoreboard */
-
-#scoreboard .entry {
-  border-bottom: 1px solid #f1f0ee;
-  padding-bottom: 5px;
-  padding-top: 5px;
-}
-
-#scoreboard .entry:hover {
-  background-color: #A7DBD8;
-  cursor: pointer;
-}
-
-/* Scoreboard > Leader */
-
-#scoreboard .leader {
-  height: 140px;
-}
-
-#scoreboard .leader .byline {
-  background: #A7DBD8;
-  border-radius: 4px;
-  color: #000;
-  height: 16px;
-  font-size: 14px;
-  font-family: 'Raleway', sans-serif;
-  line-height: 18px;
-  padding: 5px;
-  margin-top: 2px;
-  text-align: center;
+.error {
+    color:red;
+    border:none;
+    margin-left:20px;
 }
 
-#scoreboard .leader .avatar img {
-  height: 140px;
-  width: 140px;
+#photothumbs {
+    text-align:center;
+    display:none;
+    height:220px;
+    margin-top:20px;
+    vertical-align:top;
 }
 
-#scoreboard .leader .timestamp {
-  color: #333;
-  font-family: 'Podkova', sans-serif;
-  font-size: 78px;
-  margin:0px;
-  padding:0px;
+#photothumbs img {
+    height:125px;
+    margin:20px;
 }
 
-#scoreboard .leader .name {
-  font-family: 'Raleway', sans-serif;
-  font-size: 20px;
-  line-height: 30px;
+canvas {
+    /*border:1px solid #777;*/
+    border:1px dashed #000;
+    padding:1px;
+    display:inline;
+    margin:10px;
 }
 
-/* Scoreboard > Runner ups */
-
-#scoreboard .entry.runner-up {
-  height: 60px;
+#canvasholder {
+    height:0;
 }
 
-#scoreboard .runner-up .position,
-#scoreboard .runner-up .details-link {
-  height: 60px;
-  font-family: 'Podkova', sans-serif;
-  line-height: 60px;
-  text-align: center;
-  width: 58px;
+input[type="number"] {
+    display:none;
 }
 
-#scoreboard .runner-up .position {
-  color: #999;
-  border-left: 1px solid #f1f0ee;
-  border-right: 1px solid #f1f0ee;
-  font-size: 57px;
+textarea[name=extra] {
+    height:100px;
+    display:none;
+    width:300px;
 }
 
-#scoreboard .runner-up .details-link {
-  font-size: 30px;
-  cursor: pointer;
+#extralink {
+    text-align:center;
+    font-size:15px;
 }
 
-#scoreboard .runner-up .avatar img {
-  height: 60px;
-  width: 60px;
+.comment {
+    width:500px;
+    margin:10px auto;
 }
 
-#scoreboard .runner-up .timestamp {
-  color: #333;
-  font-family: 'Podkova', sans-serif;
-  font-size: 40px;
+.comment+.comment::before {
+    content:"✿";
+    font-size:30px;
+    width:500px;
+    margin:30px;
+    display:block;
+    text-align:center;
 }
 
-#scoreboard .runner-up .name {
-  font-family: 'Raleway', sans-serif;
-  font-size: 20px;
+.commentheader {
+    margin:0;
+}
+#commentform {
+    text-align:center;
 }
 
-/* Scoreboard > Noobs */
-
-#scoreboard .entry.noob {
-  height: 30px;
+h3 {
+    text-align:center;
+    font-weight:normal;
 }
 
-#scoreboard .noob .position,
-#scoreboard .noob .details-link {
-  height: 30px;
-  font-family: 'Podkova', sans-serif;
-  line-height: 30px;
-  text-align: center;
-  width: 58px;
-}
 
-#scoreboard .noob .position {
-  border-left: 1px solid #f1f0ee;
-  border-right: 1px solid #f1f0ee;
-  color: #999;
-  font-size: 20px;
-}
 
-#scoreboard .noob .details-link {
-  cursor: pointer;
-  font-size: 30px;
-}
-
-#scoreboard .noob .timestamp {
-  font-family: 'Podkova', sans-serif;
-  font-size: 16px;
-  line-height: 30px;
-}
-
-#scoreboard .noob .name {
-  font-family: 'Raleway', sans-serif;
-  font-size: 20px;
-  line-height: 30px;
-}
-
-/* Footer */
-
-#footer {
-  border-top: 1px solid #999;
-  font-family: 'Raleway', sans-serif;
-  height: 50px;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  padding-top: 20px;
-  text-align: center;
-}
 
 /*
  * Media queries for responsive design

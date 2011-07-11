@@ -26,11 +26,10 @@
 
 
   <!-- CSS : implied media="all" -->
+  <link rel="stylesheet" type="text/css" href="/css/960_12_col.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link href='http://fonts.googleapis.com/css?family=Quattrocento' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Mountains+of+Christmas' rel='stylesheet' type='text/css'>
-	
-	
+  <link href='http://fonts.googleapis.com/css?family=Podkova|Raleway:100|Josefin+Slab|Maven+Pro&v2' rel='stylesheet' type='text/css'>
+
   <!-- Uncomment if you are specifically targeting less enabled mobile browsers
   <link rel="stylesheet" media="handheld" href="css/handheld.css?v=2">  -->
  
@@ -40,36 +39,15 @@
 </head>
 
 <body>
-
-    <div id="blocker"></div>
-
-    <div id="container">
-		<img src="/images/cloud.png" alt="Cloud" id="cloud"/>
-		<header>
-			<hgroup>
-				<h1 id="almasa_oppna">Almåsa Öppna</h1>
-			</hgroup>
-				<nav>
-				{% if currentuser %}
-					Inloggad som: {{currentuser}}
-					<a href="/myraces">Mina lopp</a> | 
-					<a href="{{ logout }}">Logga ut</a> | 
-					<a href="/info">Regler</a> | 
-				{% endif %}
-					<a href="/">Startsida</a>
-				</nav>
-		</header>
-		
-		<div id="main">
-			{% block content %}{% endblock %}
-			<hr/>
-			<footer>
-				<p>Brought to you by øl and de-cadence! &copy;</p>
-			</footer>
-		</div>
-
-  </div> <!--! end of #container -->
-
+  <a href="http://github.com/jacobk/almasaopen"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://gs1.wac.edgecastcdn.net/80460E/assets/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+  <div class="container_12">
+    <div id="header"></div>
+    {% block content %}{% endblock %}
+    <div class="clear"></div>
+    <div id="footer" class="grid_12">
+      MOCK 'N' ROLLIN AB ANNO MMXI
+    </div>
+  </div>
 
   <!-- Javascript at the bottom for fast page loading -->
 
