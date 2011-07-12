@@ -6,8 +6,9 @@ from google.appengine.api import images, users
 from google.appengine.ext.webapp.util import login_required
 from datetime import datetime, timedelta
 import os
+
+# TODO: Move vogel to vendor
 import jpeg
-import operator
 
 class Race(db.Model):
     """Datastore model for a race with a user, start- and finish photo"""
@@ -18,6 +19,7 @@ class Race(db.Model):
     totalTime = db.IntegerProperty()
     user = db.UserProperty()
     extra = db.TextProperty()
+
 
 class Comment(db.Model):
     """Datastore model for comments to a race"""
@@ -33,35 +35,40 @@ class BaseHandler(webapp.RequestHandler):
                             template_name)
         self.response.out.write(template.render(path, kwargs))
 
+    @property
+    def current_user(self):
+        return users.get_current_user()
+
 
 class MainHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        user = users.get_current_user()
+        leader, runner_ups, noobs = self.make_scoreboard()
+        fail = self.request.get("fail", None)
+        current_user = users.get_current_user()
+        logout = users.create_logout_url('/')
+        login = users.create_login_url('/')
+        home = True
+        template_values = locals()
+        template_values.pop("self")
+        self.render("index.html", **template_values)
+
+    def make_scoreboard(self):
         races = Race.all()
         races.order("totalTime")
         shit_list = []
-        time_list = []
-        for race in races:
+        race_list = []
+        for i, race in enumerate(races):
             if race.user.nickname() not in shit_list:
                 shit_list.append(race.user.nickname())
-                time_list.append(race)
-            if len(shit_list)>4:
-                break
-
-        template_values['races'] = time_list
-        fail = self.request.get("fail")
-        if fail:
-            template_values['fail'] = fail
-        if user:
-            template_values['currentuser'] = users.get_current_user().nickname()
-            template_values['logout'] = users.create_logout_url('/')
-        else:
-            template_values['login'] = users.create_login_url('/')
-        self.render("index.html", **template_values)
+                race.position = i + 1
+                race_list.append(race)
+        try:
+            return race_list[0:1][0], race_list[1:5], race_list[5:]
+        except IndexError:
+            return None, [], []
 
 
-class UploadHandler(webapp.RequestHandler):
+class UploadHandler(BaseHandler):
     """Handler for adding a race to the datastore"""
     def post(self):
         race = Race()
@@ -99,7 +106,7 @@ class UploadHandler(webapp.RequestHandler):
                 race.put()
                 self.redirect('/showrace/' + str(race.key()))
         
-class GetImage(webapp.RequestHandler):
+class GetImage(BaseHandler):
     """Handler for getting an image from the datastore"""
     def get(self):
         race = db.get(self.request.get("race_id"))
@@ -111,7 +118,7 @@ class GetImage(webapp.RequestHandler):
         if photo_type == "finish":
             self.response.out.write(race.finishPhoto)
 
-class AddComment(webapp.RequestHandler):
+class AddComment(BaseHandler):
     """Handler for comments"""
     def post(self, *ar):
         comment = Comment()
@@ -122,14 +129,14 @@ class AddComment(webapp.RequestHandler):
         comment.put()
         self.redirect('/showrace/' + ar[0])
 
-class RemoveComment(webapp.RequestHandler):
+class RemoveComment(BaseHandler):
     """docstring for RemoveComment"""
     def post(self):
         comment = db.get(self.request.get("commentid"))
         if users.get_current_user() == comment.user :
             comment.delete()
 
-class ShowRace(webapp.RequestHandler):
+class ShowRace(BaseHandler):
     """Handler to show a specific race"""
     def get(self, *ar):
         race = db.get(ar[0])
@@ -144,11 +151,10 @@ class ShowRace(webapp.RequestHandler):
         template_values['logout'] = users.create_logout_url('/')
         template_values['comments'] = race.comments
         template_values['extra'] = race.extra
+        self.render("showrace.html", **template_values)
 
-        path = os.path.join(os.path.dirname(__file__), 'showrace.html')
-        self.response.out.write(template.render(path, template_values))
-        
-class RemoveRace(webapp.RequestHandler):
+
+class RemoveRace(BaseHandler):
     """Handler for removing a race from the datastore"""
     def get(self, *ar):
         race = db.get(ar[0])
@@ -160,14 +166,13 @@ class RemoveRace(webapp.RequestHandler):
         template_values['totaltime'] = race.totalTime
         template_values['currentuser'] = users.get_current_user()
         template_values['logout'] = users.create_logout_url('/')
-        path = os.path.join(os.path.dirname(__file__), 'remove.html')
-        self.response.out.write(template.render(path, template_values))
-        
+        self.render("remove.html", **template_values)
+
     def post(self, *ar):
         db.get(ar[0]).delete()
         self.redirect('/?fail=Lopp raderat.')
 
-class MyRaces(webapp.RequestHandler):
+class MyRaces(BaseHandler):
     """Handler to show all of a specific users races"""
     @login_required
     def get(self):
@@ -179,11 +184,10 @@ class MyRaces(webapp.RequestHandler):
         template_values['races'] = races
         template_values['currentuser'] = users.get_current_user()
         template_values['logout'] = users.create_logout_url('/')
-        
-        path = os.path.join(os.path.dirname(__file__), 'myraces.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render("myraces.html", **template_values)
 
-class Information(webapp.RequestHandler):
+
+class Information(BaseHandler):
     """Handler for the information page"""
     def get(self):
         
@@ -191,9 +195,8 @@ class Information(webapp.RequestHandler):
 
         template_values['currentuser'] = users.get_current_user()
         template_values['logout'] = users.create_logout_url('/')
-        
-        path = os.path.join(os.path.dirname(__file__), 'info.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render("info.html", **template_values)
+
 
 def main():
     webapp.template.register_template_library('filters')
