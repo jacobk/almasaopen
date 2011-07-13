@@ -221,7 +221,7 @@ a:active { color: #333 }
   text-align: center;
 }
 
-#scoreboard .leader .avatar img {
+#scoreboard .leader .avatar {
   height: 140px;
   width: 140px;
 }
@@ -278,7 +278,8 @@ a:active { color: #333 }
   cursor: pointer;
 }
 
-#scoreboard .runner-up .avatar img {
+#scoreboard .runner-up .avatar {
+  background-size: cover;
   height: 60px;
   width: 60px;
 }

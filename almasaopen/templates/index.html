@@ -79,8 +79,9 @@
   <div class="clear"></div>
   {% if leader %}
     <div class="entry leader">
-      <div class="avatar grid_2 alpha">
-          <img src="http://placekitten.com/140/140">
+      <div class="avatar grid_2 alpha" 
+           style='background: #FFF url("/race/{{leader.key}}/photos/finish") no-repeat;'>
+          <!-- <img src="http://placekitten.com/g/140/140" /> -->
       </div>
       <div class="slider grid_4 omega">
         <!-- default content -->
@@ -105,8 +106,8 @@
     </div>
     <div class="slider clearfix">
       <!-- default content -->
-      <div class="avatar grid_1 ">
-        <img src="http://placekitten.com/60/60">
+      <div class="avatar grid_1"
+           style='background: #FFF url("/race/{{runner_up.key}}/photos/finish") no-repeat;'>
       </div>
       <div class="grid_3">
         <div class="timestamp">{{ runner_up.totalTime|format }}</div>
