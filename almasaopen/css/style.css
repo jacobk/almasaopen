@@ -137,26 +137,32 @@ a:active { color: #333 }
 
 #header {
   background: #FFF url("/images/header_01.png") no-repeat;
+  color: #9C9C9C;
   height: 177px;
+  font-family: 'Raleway', sans-serif;
   margin-bottom: 20px;
 }
 
 #navigation {
-  height: 50px;
   padding-top: 20px;
 }
 
 #navigation li {
+  float: left;
+  font-size: 14px;
+  font-family: 'Raleway', sans-serif;
   margin-right: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 #navigation a {
-  color: #9C9C9C;
-  font-size: 20px;
-  font-family: 'Raleway', sans-serif;
+/*  color: #9C9C9C;*/
   text-decoration: none;
   text-shadow: 0 1px #FFF;
+}
+
+#navigation ul li:nth-child(even) a {
+  color: #9C9C9C;
 }
 
 #navigation a:hover {
