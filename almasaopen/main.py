@@ -105,19 +105,25 @@ class UploadHandler(BaseHandler):
                 self.redirect('/?fail=Oj! Bilderna i fel ordning.')
             else:
                 race.put()
-                self.redirect('/showrace/' + str(race.key()))
+                self.redirect('/race/' + str(race.key()))
         
-class GetImage(BaseHandler):
+class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
-    def get(self):
-        race = db.get(self.request.get("race_id"))
-        photo_type = self.request.get("type")
-        
+    def serve_photo(self, race_id, photo_type):
+        race = db.get(race_id)
         self.response.headers['Content-Type'] = 'image/jpeg'
-        if photo_type == "start":
-            self.response.out.write(race.startPhoto)
-        if photo_type == "finish":
-            self.response.out.write(race.finishPhoto)
+        self.response.out.write(getattr(race, photo_type))
+
+
+class StartPhotoHandler(BasePhotoHandler):
+    def get(self, race_id):
+        self.serve_photo(race_id, "startPhoto")
+
+
+class FinishPhotoHandler(BasePhotoHandler):
+    def get(self, race_id):
+        self.serve_photo(race_id, "finishPhoto")
+
 
 class AddComment(BaseHandler):
     """Handler for comments"""
@@ -128,7 +134,7 @@ class AddComment(BaseHandler):
         comment.time = datetime.now()
         comment.ref = db.get(ar[0])
         comment.put()
-        self.redirect('/showrace/' + ar[0])
+        self.redirect('/race/' + ar[0])
 
 class RemoveComment(BaseHandler):
     """docstring for RemoveComment"""
@@ -204,8 +210,9 @@ def main():
     
     application = webapp.WSGIApplication([('/', MainHandler),
                                         ('/upload', UploadHandler),
-                                        ('/img', GetImage),
-                                        ('/showrace/(.*)', ShowRace),
+                                        ('/race/([^/]*)/photos/start', StartPhotoHandler),
+                                        ('/race/([^/]*)/photos/finish', FinishPhotoHandler),
+                                        ('/race/([^/]*)', ShowRace),
                                         ('/addcomment/(.*)', AddComment),
                                         ('/removecomment', RemoveComment),
                                         ('/removerace/(.*)', RemoveRace),

@@ -92,7 +92,7 @@
         <!-- hover content -->
         <div class="extra-info" style="height: 140px">
           {{ leader.user }} <strong>Cyklade på</strong> {{leader.totalTime|format}} <strong>mellan</strong> {{leader.startTime|formatt}} - {{leader.finishTime|formatt}} <strong>den</strong> {{leader.startTime|formatdv}}.<br />
-          <p><a href="/showrace/{{leader.key}}">Mer info</a>.</p>
+          <p><a href="/race/{{leader.key}}">Mer info</a>.</p>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
       <!-- hover content -->
       <div class="extra-info push_1 grid_5 alpha" style="height: 60px">
         {{ runner_up.user }} <strong>Cyklade på</strong> {{runner_up.totalTime|format}} <strong>mellan</strong> {{runner_up.startTime|formatt}} - {{runner_up.finishTime|formatt}} <strong>den</strong> {{runner_up.startTime|formatdv}}.<br />
-        <p><a href="/showrace/{{runner_up.key}}">Mer info</a>.</p>
+        <p><a href="/race/{{runner_up.key}}">Mer info</a>.</p>
       </div>
     </div>
   </div>
@@ -136,7 +136,7 @@
         <div class="name">{{ noob.user }}</div>
       </div>
       <div class="details-link grid_1 omega">
-        <a href="/showrace/{{noob.key}}">></a>
+        <a href="/race/{{noob.key}}">></a>
       </div>
     </div>
     <div class="clear"></div>
