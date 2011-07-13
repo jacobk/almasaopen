@@ -33,6 +33,7 @@ class BaseHandler(webapp.RequestHandler):
     def render(self, template_name, **kwargs):
         path = os.path.join(os.path.dirname(__file__), "templates",
                             template_name)
+        kwargs.update({"current_user": users.get_current_user()})
         self.response.out.write(template.render(path, kwargs))
 
     @property
@@ -44,7 +45,6 @@ class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
         fail = self.request.get("fail", None)
-        current_user = users.get_current_user()
         logout = users.create_logout_url('/')
         login = users.create_login_url('/')
         home = True
