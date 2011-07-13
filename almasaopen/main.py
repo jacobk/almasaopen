@@ -77,19 +77,19 @@ class UploadHandler(BaseHandler):
             startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
             race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
             startPhoto = images.Image(self.request.get("start"))
-            startPhoto.resize(width=200, height=200)
             startPhoto.im_feeling_lucky()
             if self.request.get("startrot") :
                 startPhoto.rotate(int(self.request.get("startrot")));
+            startPhoto.resize(width=220)
             race.startPhoto = db.Blob(startPhoto.execute_transforms())
 
             finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
             race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
             finishPhoto = images.Image(self.request.get("finish"))
-            finishPhoto.resize(width=200, height=200)
             finishPhoto.im_feeling_lucky()
             if self.request.get("finishrot") :
                 finishPhoto.rotate(int(self.request.get("finishrot")));
+            finishPhoto.resize(width=220)
             race.finishPhoto = db.Blob(finishPhoto.execute_transforms())
         except ValueError:
             self.redirect('/?fail=Oj! Bilderna har ej korrekt EXIF data.')
@@ -150,16 +150,9 @@ class ShowRace(BaseHandler):
     def get(self, *ar):
         race = db.get(ar[0])
         template_values = {}
-        
         template_values['id'] = ar[0]
-        template_values['username'] = race.user
-        template_values['starttime'] = race.startTime
-        template_values['finishtime'] = race.finishTime
-        template_values['totaltime'] = race.totalTime
-        template_values['currentuser'] = users.get_current_user()
+        template_values['race'] = race
         template_values['logout'] = users.create_logout_url('/')
-        template_values['comments'] = race.comments
-        template_values['extra'] = race.extra
         self.render("showrace.html", **template_values)
 
 

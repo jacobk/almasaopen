@@ -1,6 +1,11 @@
 from google.appengine.ext import webapp
 from datetime import datetime, timedelta, date
 
+_SE_MONTH_NAMES = {
+    1: "januari", 2: "februari", 3: "mars", 4: "april", 5: "maj", 6: "juni",
+    7: "juli", 8: "augusti", 9: "september", 10: "oktober", 11: "november",
+    12: "december"
+}
 
 register = webapp.template.create_template_register()
 
@@ -14,14 +19,25 @@ def formatd(indate):
   
 def formatdv(indate):
     """Format datetime to just date"""
-    return indate.strftime("%d %b %Y")
+    month_name = _SE_MONTH_NAMES.get(indate.month, "sommari")
+    return indate.strftime("%d %%s %Y") % month_name
+
+def formatdvsy(indate):
+    month_name = _SE_MONTH_NAMES.get(indate.month, "sommari")
+    return indate.strftime("%d %%s") % month_name
   
 def formatt(indate):
     """Format datetime to just time"""
     return indate.strftime("%H:%M:%S")
-    
-    
+
+def formaty(indate):
+    """Format datetime to just time"""
+    return indate.strftime("%Y")
+
+
 register.filter(format)
 register.filter(formatd)
 register.filter(formatdv)
+register.filter(formatdvsy)
 register.filter(formatt)
+register.filter(formaty)

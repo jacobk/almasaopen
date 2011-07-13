@@ -1,45 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="race_images">
-	<h2>{{username}}</h2><h2>{{starttime|formatd}}</h2>
-    <table id="showracetable" border="0">
-        <tr><th>Startfoto</th><th>Målfoto</th></tr>
-        <tr>
-            <td>
-                <img src="/races/{{ id }}/photos/start" alt="Startfoto" />
-            </td>
-            <td>
-                <img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
-            </td>
-        </tr>
-    </table>
-	<h2>Totaltid: {{ totaltime|format }}!</h2>
-    {% if extra %}
-    <p id="extralink">{{ extra }}</p>
+<div id="race-view" class="grid_6">
+  <h3>Tjik!</h3>
+  <p>
+    Året var {{race.startTime|formaty}}. {{race.user}} begav sig den {{race.startTime|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.user}} påbörjade sin färd klockan {{race.startTime|formatt}} och den varade ända tills klockan {{race.startTime|formatt}}. Hela resan varade, rätt exakt, i {{race.totalTime|format}} timmar, minuter och sekunder. Cool story bro!
+  </p>
+    {% if race.extra %}
+    <p id="extralink">{{ race.extra }}</p>
     <textarea placeholder="Extra extra!" name=extra></textarea>
     {% endif %}
-    <h2>Kommentarer</h2>
-    {% for comment in comments %}
-        <div class="comment">
-            <p class="commentheader"><strong>{{ comment.user }}</strong> - {{ comment.time|formatd }} klockan {{ comment.time|formatt }}</p>
-            <p>{{ comment.comment }}</p>
-            {% ifequal comment.user currentuser %}
+    <h3>Kommentarer</h3>
+    {% for comment in race.comments %}
+        <div class="comment clearfix">
+          <div class="comment-bullet grid_1 alpha">
+            <img src="/images/small_seal.png" />
+          </div>
+          <div class="grid_4">
+              <div class="name">{{ comment.user }}</div>
+              <div class="date">{{ comment.time|formatd }}  {{ comment.time|formatt }}</div>
+          </div>
+          <div class="delete grid_1 omega">
+            {% ifequal comment.user current_user %}
             <form action="/races/{{ id }}/comments/{{ comment.key }}" method="post" accept-charset="utf-8">
-              <p><input type="submit" value="Radera"></p>
+              <input type="submit" value="Radera">
             </form>
-            <!-- <a href="#" onclick='deleteComment("{{ comment.key }}", "{{ id }}");$(this).parent().remove(); return false;' >Radera</a> -->
             {% endifequal %}
+          </div>
+          <div class="clear"></div>
+          
+          <div class="push_1 grid_5 alpha omega">
+              <p>{{ comment.comment|escape }}</p>
+          </div>
         </div>
+        <div class="clear"></div>
     {% endfor %}
-    {% if currentuser %}
+    {% if current_user %}
     <form id="commentform" action="/races/{{ id }}/comments" method="post" accept-charset="utf-8">
-        <textarea name="comment" cols=70 rows=6 placeholder="Kommentera loppet!"></textarea>
-    
+        <textarea name="comment" placeholder="Kommentera loppet!"></textarea>
     <p><input type="submit" value="Kommentera"></p>
     </form>
     {% else %}
-    <h3>Logga in för att kunna kommentera!</h3>
+    <h4>Logga in för att kunna kommentera!</h4>
     {% endif %}
+  
 </div>
+<div id="race-photos" class="grid_6">
+    <h3>Före & Efter</h3>
+    <div id="start-photo" class="grid_3 alpha">
+      <img src="/races/{{ id }}/photos/start" alt="Startfoto" />
+    </div>
+    <div id="finish-photo" class="grid_3 omega">
+      <img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
+    </div>
+      <!-- <table id="showracetable" border="0">
+          <tr><th>Startfoto</th><th>Målfoto</th></tr>
+          <tr>
+              <td>
+                  <img src="/races/{{ id }}/photos/start" alt="Startfoto" />
+              </td>
+              <td>
+                  <img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
+              </td>
+          </tr>
+      </table> -->
+</div>
+
 {% endblock %}
