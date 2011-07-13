@@ -67,6 +67,18 @@ $(document).ready(function () {
         }
         return false;
     });
+    
+    $("#scoreboard .entry.leader").hover(function(evt) {
+      $(".slider", this).animate({top: -140}, 100);
+    }, function(evt) {
+      $(".slider", this).animate({top: 0}, 100);
+    });
+
+    $("#scoreboard .entry.runner-up").hover(function(evt) {
+      $(".slider", this).animate({top: -70}, 100);
+    }, function(evt) {
+      $(".slider", this).animate({top: 0}, 100);
+    });
 });
 
 
@@ -201,5 +213,3 @@ jQuery.fn.file = function() {
     update();
   });
 };
-
-

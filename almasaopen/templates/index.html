@@ -73,25 +73,38 @@
 </div>
 <!-- END LEFT COL -->
 <div id="scoreboard" class="grid_6">
+  <div id="foo" style="display: none;" class="grid_6">
+    DARK SIDE OF THE MOON
+  </div>
   <div class="clear"></div>
   {% if leader %}
     <div class="entry leader">
       <div class="avatar grid_2 alpha">
           <img src="http://placekitten.com/140/140">
       </div>
-      <div class="grid_4 omega">
-        <div class="timestamp">{{ leader.totalTime|format }}</div>
+      <div class="slider grid_4 omega">
+        <!-- default content -->
+        <div class="timestamp">
+            {{ leader.totalTime|format }}
+        </div>
         <div class="name">{{ leader.user }}</div>
-        <div class="byline">Vägens konug sedan TODO dagar</div>
+        <div class="byline">Vägens konung sedan TODO dagar</div>
+        <!-- hover content -->
+        <div class="extra-info" style="height: 140px">
+          {{ leader.user }} <strong>Cyklade på</strong> {{leader.totalTime|format}} <strong>mellan</strong> {{leader.startTime|formatt}} - {{leader.finishTime|formatt}} <strong>den</strong> {{leader.startTime|formatdv}}.<br />
+          <p><a href="/showrace/{{leader.key}}">Mer info</a>.</p>
+        </div>
       </div>
     </div>
     <div class="clear"></div>
   {% endif %}
   {% for runner_up in runner_ups %}
-    <div class="entry runner-up">
-      <div class="position grid_1 alpha">
-        {{ runner_up.position }}
-      </div>
+  <div class="entry runner-up">
+    <div class="position grid_1 alpha">
+      {{ runner_up.position }}
+    </div>
+    <div class="slider clearfix">
+      <!-- default content -->
       <div class="avatar grid_1 ">
         <img src="http://placekitten.com/60/60">
       </div>
@@ -99,8 +112,16 @@
         <div class="timestamp">{{ runner_up.totalTime|format }}</div>
         <div class="name">{{ runner_up.user }}</div>
       </div>
-      <div class="details-link grid_1 omega">></div>
+      <div class="details-link grid_1 omega">
+        >
+      </div>
+      <!-- hover content -->
+      <div class="extra-info push_1 grid_5 alpha" style="height: 60px">
+        {{ runner_up.user }} <strong>Cyklade på</strong> {{runner_up.totalTime|format}} <strong>mellan</strong> {{runner_up.startTime|formatt}} - {{runner_up.finishTime|formatt}} <strong>den</strong> {{runner_up.startTime|formatdv}}.<br />
+        <p><a href="/showrace/{{runner_up.key}}">Mer info</a>.</p>
+      </div>
     </div>
+  </div>
     <div class="clear"></div>
   {% endfor %}
   {% for noob in noobs %}
@@ -114,7 +135,9 @@
       <div class="grid_3">
         <div class="name">{{ noob.user }}</div>
       </div>
-      <div class="details-link grid_1 omega">></div>
+      <div class="details-link grid_1 omega">
+        <a href="/showrace/{{noob.key}}">></a>
+      </div>
     </div>
     <div class="clear"></div>
   {% endfor %}

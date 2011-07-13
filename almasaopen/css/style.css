@@ -174,20 +174,38 @@ a:active { color: #333 }
 #scoreboard .entry {
   border-bottom: 1px solid #f1f0ee;
   color: #555;
+  height: 60px;
   padding-bottom: 5px;
   padding-top: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+#scoreboard .slider {
+    position: relative;
 }
 
 #scoreboard .entry:hover {
-  background-color: #A7DBD8;
-  color: #FFF;
+/*  background-color: #A7DBD8;*/
+/*  color: #FFF;
   cursor: pointer;
-}
+*/}
 
 /* Scoreboard > Leader */
 
 #scoreboard .leader {
   height: 140px;
+  overflow: hidden;
+}
+
+#scoreboard .leader .extra-info {
+    margin-top: 10px;
+    line-height: 1.3em;
+}
+
+#scoreboard .leader .extra-info strong{
+    color: #333;
+    font-weight: bold;
 }
 
 #scoreboard .leader .byline {
@@ -224,6 +242,17 @@ a:active { color: #333 }
 
 #scoreboard .entry.runner-up {
   height: 60px;
+}
+
+
+#scoreboard .runner-up .extra-info {
+    margin-top: 10px;
+    line-height: 1.3em;
+}
+
+#scoreboard .runner-up .extra-info strong{
+    color: #333;
+    font-weight: bold;
 }
 
 #scoreboard .runner-up .position,
