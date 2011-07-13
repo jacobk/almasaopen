@@ -57,11 +57,12 @@ class MainHandler(BaseHandler):
         races.order("totalTime")
         shit_list = []
         race_list = []
-        for i, race in enumerate(races):
+        for race in races:
             if race.user.nickname() not in shit_list:
                 shit_list.append(race.user.nickname())
-                race.position = i + 1
                 race_list.append(race)
+        for i, race in enumerate(race_list):
+            race.position = i + 1
         try:
             return race_list[0:1][0], race_list[1:5], race_list[5:]
         except IndexError:
