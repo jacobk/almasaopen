@@ -105,7 +105,7 @@ class UploadHandler(BaseHandler):
                 self.redirect('/?fail=Oj! Bilderna i fel ordning.')
             else:
                 race.put()
-                self.redirect('/race/' + str(race.key()))
+                self.redirect('/races/' + str(race.key()))
         
 class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
@@ -125,7 +125,7 @@ class FinishPhotoHandler(BasePhotoHandler):
         self.serve_photo(race_id, "finishPhoto")
 
 
-class AddComment(BaseHandler):
+class CommentsHandler(BaseHandler):
     """Handler for comments"""
     def post(self, *ar):
         comment = Comment()
@@ -134,14 +134,16 @@ class AddComment(BaseHandler):
         comment.time = datetime.now()
         comment.ref = db.get(ar[0])
         comment.put()
-        self.redirect('/race/' + ar[0])
+        self.redirect('/races/' + ar[0])
 
-class RemoveComment(BaseHandler):
-    """docstring for RemoveComment"""
-    def post(self):
-        comment = db.get(self.request.get("commentid"))
+
+class CommentHandler(BaseHandler):
+    def post(self, race_id, comment_id):
+        comment = db.get(comment_id)
         if users.get_current_user() == comment.user :
             comment.delete()
+        self.redirect("/races/%s" % race_id)
+
 
 class ShowRace(BaseHandler):
     """Handler to show a specific race"""
@@ -179,6 +181,7 @@ class RemoveRace(BaseHandler):
         db.get(ar[0]).delete()
         self.redirect('/?fail=Lopp raderat.')
 
+
 class MyRaces(BaseHandler):
     """Handler to show all of a specific users races"""
     @login_required
@@ -210,11 +213,11 @@ def main():
     
     application = webapp.WSGIApplication([('/', MainHandler),
                                         ('/upload', UploadHandler),
-                                        ('/race/([^/]*)/photos/start', StartPhotoHandler),
-                                        ('/race/([^/]*)/photos/finish', FinishPhotoHandler),
-                                        ('/race/([^/]*)', ShowRace),
-                                        ('/addcomment/(.*)', AddComment),
-                                        ('/removecomment', RemoveComment),
+                                        ('/races/([^/]*)/photos/start', StartPhotoHandler),
+                                        ('/races/([^/]*)/photos/finish', FinishPhotoHandler),
+                                        ('/races/([^/]*)/comments', CommentsHandler),
+                                        ('/races/([^/]*)/comments/(.*)', CommentHandler),
+                                        ('/races/([^/]*)', ShowRace),
                                         ('/removerace/(.*)', RemoveRace),
                                         ('/myraces', MyRaces),
                                         ('/info', Information)],

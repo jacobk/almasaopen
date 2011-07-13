@@ -80,7 +80,7 @@
   {% if leader %}
     <div class="entry leader">
       <div class="avatar grid_2 alpha" 
-           style='background: #FFF url("/race/{{leader.key}}/photos/finish") no-repeat;'>
+           style='background: #FFF url("/races/{{leader.key}}/photos/finish") no-repeat;'>
           <!-- <img src="http://placekitten.com/g/140/140" /> -->
       </div>
       <div class="slider grid_4 omega">
@@ -93,7 +93,7 @@
         <!-- hover content -->
         <div class="extra-info" style="height: 140px">
           {{ leader.user }} <strong>Cyklade på</strong> {{leader.totalTime|format}} <strong>mellan</strong> {{leader.startTime|formatt}} - {{leader.finishTime|formatt}} <strong>den</strong> {{leader.startTime|formatdv}}.<br />
-          <p><a href="/race/{{leader.key}}">Mer info</a>.</p>
+          <p><a href="/races/{{leader.key}}">Mer info</a>.</p>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@
     <div class="slider clearfix">
       <!-- default content -->
       <div class="avatar grid_1"
-           style='background: #FFF url("/race/{{runner_up.key}}/photos/finish") no-repeat;'>
+           style='background: #FFF url("/races/{{runner_up.key}}/photos/finish") no-repeat;'>
       </div>
       <div class="grid_3">
         <div class="timestamp">{{ runner_up.totalTime|format }}</div>
@@ -119,7 +119,7 @@
       <!-- hover content -->
       <div class="extra-info push_1 grid_5 alpha" style="height: 60px">
         {{ runner_up.user }} <strong>Cyklade på</strong> {{runner_up.totalTime|format}} <strong>mellan</strong> {{runner_up.startTime|formatt}} - {{runner_up.finishTime|formatt}} <strong>den</strong> {{runner_up.startTime|formatdv}}.<br />
-        <p><a href="/race/{{runner_up.key}}">Mer info</a>.</p>
+        <p><a href="/races/{{runner_up.key}}">Mer info</a>.</p>
       </div>
     </div>
   </div>
@@ -137,7 +137,7 @@
         <div class="name">{{ noob.user }}</div>
       </div>
       <div class="details-link grid_1 omega">
-        <a href="/race/{{noob.key}}">></a>
+        <a href="/races/{{noob.key}}">></a>
       </div>
     </div>
     <div class="clear"></div>

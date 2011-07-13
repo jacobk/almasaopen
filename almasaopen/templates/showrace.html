@@ -7,10 +7,10 @@
         <tr><th>Startfoto</th><th>Målfoto</th></tr>
         <tr>
             <td>
-                <img src="/race/{{ id }}/photos/start" alt="Startfoto" />
+                <img src="/races/{{ id }}/photos/start" alt="Startfoto" />
             </td>
             <td>
-                <img src="/race/{{ id }}/photos/finish" alt="Målfoto" />
+                <img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
             </td>
         </tr>
     </table>
@@ -25,12 +25,15 @@
             <p class="commentheader"><strong>{{ comment.user }}</strong> - {{ comment.time|formatd }} klockan {{ comment.time|formatt }}</p>
             <p>{{ comment.comment }}</p>
             {% ifequal comment.user currentuser %}
-            <a href="#" onclick='deleteComment("{{ comment.key }}", "{{ id }}");$(this).parent().remove(); return false;' >Radera</a>
+            <form action="/races/{{ id }}/comments/{{ comment.key }}" method="post" accept-charset="utf-8">
+              <p><input type="submit" value="Radera"></p>
+            </form>
+            <!-- <a href="#" onclick='deleteComment("{{ comment.key }}", "{{ id }}");$(this).parent().remove(); return false;' >Radera</a> -->
             {% endifequal %}
         </div>
     {% endfor %}
     {% if currentuser %}
-    <form id="commentform" action="/addcomment/{{ id }}" method="post" accept-charset="utf-8">
+    <form id="commentform" action="/races/{{ id }}/comments" method="post" accept-charset="utf-8">
         <textarea name="comment" cols=70 rows=6 placeholder="Kommentera loppet!"></textarea>
     
     <p><input type="submit" value="Kommentera"></p>
