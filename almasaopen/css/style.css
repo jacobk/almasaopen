@@ -340,14 +340,14 @@ a:active { color: #333 }
 }
 
 #registration .reg-step {
-  margin-bottom: 10px;
   padding-bottom: 5px;
   padding-top: 5px;
 }
 
 #registration .reg-step .number {
     font-family: 'Podkova', sans-serif;
-    line-height: 60px;
+    line-height: 30px;
+    height: 30px;
     text-align: center;
     width: 58px;
     color: #999;
@@ -359,7 +359,7 @@ a:active { color: #333 }
 #registration .reg-step .description {
   color: #999;
   font-size: 16px;
-  line-height: 60px;
+  line-height: 30px;
 }
 /* Footer */
 

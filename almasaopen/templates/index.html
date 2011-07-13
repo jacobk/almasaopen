@@ -5,22 +5,20 @@
 <p id="fail"><span>{{ fail }}</span></p>
 {% endif %}
 <div id="welcome" class="text-content grid_6">
-{% if not current_user %}
-  <h3 class="">
-    Cykellopp, jämt <u>o</u> ständigt!
-  </h3>
-  <p>
-    Detta är cykeltävlingen för alla! Hipsters, landsvägs-eliten, hundar, veganer, laktosintolleranta, Zlatan, fan och hans moster. <strong>ALLA SKA MED! HÄR FÅR NI EXTRA!</strong> Starten går precis när du själv vill, orkar och har tid. Tävlingen avgörs här, kontinuerligt.
-  </p>
-  <p class="last">
-    Reglerna är enkla och går att läsa <a href="/info">här</a>. Lycka till!
-  </p>
-{% endif %}
+<h3 class="">
+  Cykellopp, jämt <u>o</u> ständigt!
+</h3>
+<p>
+  Detta är cykeltävlingen för alla! Hipsters, landsvägs-eliten, hundar, veganer, laktosintolleranta, Zlatan, fan och hans moster. Alla ska med! Starten går precis när du själv vill, orkar och har tid. Tävlingen avgörs här, kontinuerligt.
+</p>
+<p class="last">
+  Reglerna är enkla och går att läsa <a href="/info">här</a>. Lycka till!
+</p>
   <div id="registration">
     <h3>Registrering</h3>
 {% if current_user %}
     <form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
-      <div class="reg-step">
+      <div class="reg-step clearfix">
         <div class="grid_1 number alpha">1</div>
         <div class="grid_5 description omega">
           <label for="start">Välj startfil &rarr;</label>
@@ -29,7 +27,7 @@
         </div>
       </div>
       <div class="clear"></div>
-      <div class="reg-step">
+      <div class="reg-step clearfix">
         <div class="grid_1 number alpha">2</div>
         <div class="grid_5 description omega">
           <label for="finish">Välj målfil &rarr;</label>
@@ -38,14 +36,14 @@
         </div>
       </div>
       <div class="clear"></div>
-      <div class="reg-step">
+      <div class="reg-step clearfix">
         <div class="grid_1 number alpha">3</div>
         <div class="grid_5 description omega">
           <textarea placeholder="RunKeeper länk, vädernotis, whatever!" name=extra></textarea>
         </div>
       </div>
       <div class="clear"></div>
-      <div class="reg-step">
+      <div class="reg-step clearfix">
         <div class="grid_1 number alpha">4</div>
         <div id="photothumbs" class="grid_5 description omega">
           Klicka på fotot för att rotera<br />
@@ -54,7 +52,7 @@
         </div>
       </div>
       <div class="clear"></div>
-      <div class="reg-step">
+      <div class="reg-step clearfix">
         <div class="grid_1 number alpha">5</div>
         <div id="submitbutton" class="grid_5 description omega">
           <input disabled="disabled" id="submitbtn" type="submit" value="Välj start och målfil!">
