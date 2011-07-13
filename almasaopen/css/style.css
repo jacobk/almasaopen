@@ -173,12 +173,14 @@ a:active { color: #333 }
 
 #scoreboard .entry {
   border-bottom: 1px solid #f1f0ee;
+  color: #555;
   padding-bottom: 5px;
   padding-top: 5px;
 }
 
 #scoreboard .entry:hover {
   background-color: #A7DBD8;
+  color: #FFF;
   cursor: pointer;
 }
 
@@ -189,7 +191,6 @@ a:active { color: #333 }
 }
 
 #scoreboard .leader .byline {
-  color: #000;
   height: 16px;
   font-size: 14px;
   font-family: 'Raleway', sans-serif;
@@ -205,7 +206,6 @@ a:active { color: #333 }
 }
 
 #scoreboard .leader .timestamp {
-  color: #333;
   font-family: 'Podkova', sans-serif;
   font-size: 78px;
   margin:0px;
@@ -236,7 +236,6 @@ a:active { color: #333 }
 }
 
 #scoreboard .runner-up .position {
-  color: #999;
   border-left: 1px solid #f1f0ee;
   border-right: 1px solid #f1f0ee;
   font-size: 57px;
@@ -253,7 +252,6 @@ a:active { color: #333 }
 }
 
 #scoreboard .runner-up .timestamp {
-  color: #333;
   font-family: 'Podkova', sans-serif;
   font-size: 40px;
 }
@@ -304,19 +302,11 @@ a:active { color: #333 }
 
 /* Registration */
 
+#registration {
+}
+
 #registration input[type="number"] {
     display:none;
-}
-
-#registration input[type="file"] {
-}
-
-#registration label {
-  cursor: pointer;
-}
-
-#registration label:hover {
-  text-decoration: underline;
 }
 
 #registration textarea[name=extra] {
