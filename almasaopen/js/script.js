@@ -71,13 +71,13 @@ $(document).ready(function () {
     $("#scoreboard .entry.leader").hover(function(evt) {
       $(".slider", this).animate({top: -140}, 100);
     }, function(evt) {
-      $(".slider", this).animate({top: 0}, 100);
+      $(".slider", this).animate({top: 0}, 0);
     });
 
     $("#scoreboard .entry.runner-up").hover(function(evt) {
       $(".slider", this).animate({top: -70}, 100);
     }, function(evt) {
-      $(".slider", this).animate({top: 0}, 100);
+      $(".slider", this).animate({top: 0}, 0);
     });
 });
 
