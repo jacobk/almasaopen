@@ -312,9 +312,10 @@ a:active { color: #333 }
   font-size: 20px;
 }
 
-#scoreboard .noob .details-link {
+#scoreboard .noob .details-link a {
   cursor: pointer;
   font-size: 30px;
+  text-decoration: none;
 }
 
 #scoreboard .noob .timestamp {
