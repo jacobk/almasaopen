@@ -497,7 +497,17 @@ a:active { color: #333 }
 /* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)  
    Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
 @media screen and (max-device-width: 480px) {
-  
+
+  body::before {
+      content:"Registrering är inte möjlig på mobiler";
+      text-align:center;
+      font-size:30px;
+      line-height:100px;
+      height:100px;
+      display:block;
+      background:#ddd;
+      border-bottom:1px dashed #bbb;
+  }
   
   /* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
      j.mp/textsizeadjust 
