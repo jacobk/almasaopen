@@ -128,42 +128,7 @@ class UploadHandler(BaseHandler):
             raise ValidationError("Bilderna saknar tidsdata :(")
         return datetime.strptime(exif_time, "%Y:%m:%d %H:%M:%S")
 
-    # def post(self):
-    #     race = Race()
-    #     try:
-    #         startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
-    #         race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
-    #         startPhoto = images.Image(self.request.get("start"))
-    #         startPhoto.im_feeling_lucky()
-    #         if self.request.get("startrot") :
-    #             startPhoto.rotate(int(self.request.get("startrot")));
-    #         startPhoto.resize(width=220)
-    #         race.startPhoto = db.Blob(startPhoto.execute_transforms())
-    # 
-    #         finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
-    #         race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
-    #         finishPhoto = images.Image(self.request.get("finish"))
-    #         finishPhoto.im_feeling_lucky()
-    #         if self.request.get("finishrot") :
-    #             finishPhoto.rotate(int(self.request.get("finishrot")));
-    #         finishPhoto.resize(width=220)
-    #         race.finishPhoto = db.Blob(finishPhoto.execute_transforms())
-    #     except ValueError:
-    #         self.redirect('/?fail=Oj! Bilderna har ej korrekt EXIF data.')
-    #     else:
-    #         totalTime = race.finishTime - race.startTime
-    #         
-    #         race.totalTime = totalTime.seconds
-    #         
-    #         if self.request.get("extra") :
-    #             race.extra = self.request.get("extra")
-    #         race.user = users.get_current_user()
-    #         if race.finishTime<=race.startTime:
-    #             self.redirect('/?fail=Oj! Bilderna i fel ordning.')
-    #         else:
-    #             race.put()
-    #             self.redirect('/races/' + str(race.key()))
-        
+
 class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
     def serve_photo(self, race_id, photo_type):
