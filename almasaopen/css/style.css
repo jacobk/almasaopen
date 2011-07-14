@@ -505,6 +505,10 @@ a:active { color: #333 }
 
 /* My Races */
 
+#myraces {
+  margin-bottom: 20px;
+}
+
 #myraces th {
   border-left: 1px solid #f1f0ee;;
   padding-left: 5px;
@@ -522,7 +526,29 @@ a:active { color: #333 }
   word-wrap: break-word;
 }
 
+#settings .name-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  height: 30px;
+  line-height: 30px;
+}
 
+#settings input[type="text"] {
+  border: 1px solid #CCC;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  height: 22px;
+  padding: 4px;
+  -webkit-box-shadow: 0px 1px 0px 0px #ffffff;
+  -moz-box-shadow: 0px 1px 0px 0px #ffffff;
+  box-shadow: 0px 1px 0px 0px #ffffff;
+  color: #222;
+  font: 14px/18px "Helvetica Neue",Arial,sans-serif;
+  resize: none;
+  width: 284px;
+  
+}
 
 /*
  * Media queries for responsive design
