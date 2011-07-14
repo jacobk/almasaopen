@@ -16,7 +16,7 @@
             <img src="/images/small_seal.png" />
           </div>
           <div class="grid_4">
-              <div class="name">{{ comment.user }}</div>
+              <div class="name">{{ comment.user|escape }}</div>
               <div class="date">{{ comment.time|formatd }}  {{ comment.time|formatt }}</div>
           </div>
           <div class="delete grid_1 omega">

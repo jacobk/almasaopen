@@ -53,7 +53,7 @@
         </ul>
       </nav>
       {% if current_user %}
-        Inloggad som {{ current_user.nickname }}
+        Inloggad som {{ current_user.nickname|escape }}
       {% endif %}
     </header>
     {% block content %}{% endblock %}

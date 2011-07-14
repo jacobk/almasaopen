@@ -98,11 +98,11 @@
         <div class="timestamp">
             {{ leader.totalTime|format }}
         </div>
-        <div class="name">{{ leader.user }}</div>
+        <div class="name">{{ leader.user|escape }}</div>
         <div class="byline">Vägens konung sedan {{ leader_string }}</div>
         <!-- hover content -->
         <div class="extra-info" style="height: 140px">
-          {{ leader.user }} <strong>Cyklade på</strong> {{leader.totalTime|format}} <strong>mellan</strong> {{leader.startTime|formatt}} - {{leader.finishTime|formatt}} <strong>den</strong> {{leader.startTime|formatdv}}.<br />
+          {{ leader.user|escape }} <strong>Cyklade på</strong> {{leader.totalTime|format}} <strong>mellan</strong> {{leader.startTime|formatt}} - {{leader.finishTime|formatt}} <strong>den</strong> {{leader.startTime|formatdv}}.<br />
           <p><a href="/races/{{leader.key}}">Mer info</a>.</p>
         </div>
       </div>
@@ -121,14 +121,14 @@
       </div>
       <div class="grid_3">
         <div class="timestamp">{{ runner_up.totalTime|format }}</div>
-        <div class="name">{{ runner_up.user }}</div>
+        <div class="name">{{ runner_up.user|escape }}</div>
       </div>
       <div class="details-link grid_1 omega">
         >
       </div>
       <!-- hover content -->
       <div class="extra-info push_1 grid_5 alpha" style="height: 60px">
-        {{ runner_up.user }} <strong>Cyklade på</strong> {{runner_up.totalTime|format}} <strong>mellan</strong> {{runner_up.startTime|formatt}} - {{runner_up.finishTime|formatt}} <strong>den</strong> {{runner_up.startTime|formatdv}}.<br />
+        {{ runner_up.user|escape }} <strong>Cyklade på</strong> {{runner_up.totalTime|format}} <strong>mellan</strong> {{runner_up.startTime|formatt}} - {{runner_up.finishTime|formatt}} <strong>den</strong> {{runner_up.startTime|formatdv}}.<br />
         <p><a href="/races/{{runner_up.key}}">Mer info</a>.</p>
       </div>
     </div>
@@ -144,7 +144,7 @@
         <div class="timestamp">{{ noob.totalTime|format }}</div>
       </div>
       <div class="grid_3">
-        <div class="name">{{ noob.user }}</div>
+        <div class="name">{{ noob.user|escape }}</div>
       </div>
       <div class="details-link grid_1 omega">
         <a href="/races/{{noob.key}}">></a>
