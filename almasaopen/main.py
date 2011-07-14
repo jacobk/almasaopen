@@ -44,6 +44,10 @@ class BaseHandler(webapp.RequestHandler):
 class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
+        leader_since = (datetime.now() - leader.finishTime).days
+        leader_string = "%(days)d %(string)s" % \
+                {"days": leader_since,
+                "string": "dag" if leader_since==1 else "dagar"}
         fail = self.request.get("fail", None)
         logout = users.create_logout_url('/')
         login = users.create_login_url('/')

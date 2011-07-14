@@ -472,6 +472,13 @@ a:active { color: #333 }
   text-align: center;
 }
 
+/* Regler */
+
+.fotnot {
+    font-size:10px;
+}
+
+
 /*
  * Media queries for responsive design
  * These follow after primary styles so they will successfully override. 

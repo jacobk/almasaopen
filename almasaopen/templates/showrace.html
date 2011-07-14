@@ -4,11 +4,10 @@
 <div id="race-view" class="grid_6">
   <h3>Tjik!</h3>
   <p>
-    Året var {{race.startTime|formaty}}. {{race.user}} begav sig den {{race.startTime|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.user}} påbörjade sin färd klockan {{race.startTime|formatt}} och den varade ända tills klockan {{race.startTime|formatt}}. Hela resan varade, rätt exakt, i {{race.totalTime|format}} timmar, minuter och sekunder. Cool story bro!
+    Året var {{race.startTime|formaty}}. {{race.user}} begav sig den {{race.startTime|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.user}} påbörjade sin färd klockan {{race.startTime|formatt}} och den varade ända tills klockan {{race.finishTime|formatt}}. Hela resan varade, rätt exakt, i {{race.totalTime|format}} timmar, minuter och sekunder. Cool story bro!
   </p>
     {% if race.extra %}
-    <p id="extralink">{{ race.extra }}</p>
-    <textarea placeholder="Extra extra!" name=extra></textarea>
+    <p id="extralink">{{ race.extra|escape }}</p>
     {% endif %}
     <h3>Kommentarer</h3>
     {% for comment in race.comments %}
