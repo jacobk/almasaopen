@@ -415,6 +415,10 @@ a:active { color: #333 }
 
 /* Show race */
 
+#race-view {
+  word-wrap: break-word;
+}
+
 #race-view .comment-bullet {
     height: 60px;
     font-family: 'Podkova', sans-serif;
@@ -498,6 +502,26 @@ a:active { color: #333 }
 .fotnot {
     font-size:10px;
 }
+
+/* My Races */
+
+#myraces th {
+  border-left: 1px solid #f1f0ee;;
+  padding-left: 5px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  text-align: left;
+}
+
+#myraces td {
+  padding: 10px 10px 0px 5px;
+  min-width: 80px;
+  max-width: 300px;
+  border-left: 1px solid #f1f0ee;;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 
 
 /*
