@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
 from google.appengine.api import images, users
@@ -9,6 +8,15 @@ import os
 
 # TODO: Move vogel to vendor
 import jpeg
+
+
+class AlmasaError(Exception):
+    """Base class for all exceptions in the almasa main module"""
+
+
+class ValidationError(AlmasaError):
+    pass
+
 
 class Race(db.Model):
     """Datastore model for a race with a user, start- and finish photo"""
@@ -76,40 +84,85 @@ class MainHandler(BaseHandler):
 class UploadHandler(BaseHandler):
     """Handler for adding a race to the datastore"""
     def post(self):
-        race = Race()
+        start_photo_data = self.request.get("start")
+        finish_photo_data = self.request.get("finish")
         try:
-            startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
-            race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
-            startPhoto = images.Image(self.request.get("start"))
-            startPhoto.im_feeling_lucky()
-            if self.request.get("startrot") :
-                startPhoto.rotate(int(self.request.get("startrot")));
-            startPhoto.resize(width=220)
-            race.startPhoto = db.Blob(startPhoto.execute_transforms())
+            self._create_race(start_photo_data, finish_photo_data)
+        except ValidationError, e:
+            self.redirect('/?fail=Oj! %s' % str(e))
 
-            finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
-            race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
-            finishPhoto = images.Image(self.request.get("finish"))
-            finishPhoto.im_feeling_lucky()
-            if self.request.get("finishrot") :
-                finishPhoto.rotate(int(self.request.get("finishrot")));
-            finishPhoto.resize(width=220)
-            race.finishPhoto = db.Blob(finishPhoto.execute_transforms())
+    def _create_race(self, start_photo_data, finish_photo_data):
+        race = Race()
+        race.startTime = self._extract_time(start_photo_data)
+        race.finishTime = self._extract_time(finish_photo_data)
+        if race.finishTime < race.startTime:
+            raise ValidationError("Bilderna i fel ordning.")
+        start_photo = self._process_photo_data(start_photo_data,
+                                               self.request.get("startrot"))
+        finish_photo = self._process_photo_data(finish_photo_data,
+                                                self.request.get("finishrot"))
+        race.startPhoto = db.Blob(start_photo.execute_transforms())
+        race.finishPhoto = db.Blob(finish_photo.execute_transforms())
+        total_time = race.finishTime - race.startTime
+        race.totalTime = total_time.seconds
+        if self.request.get("extra") :
+            race.extra = self.request.get("extra")
+        race.user = self.current_user
+        race.put()
+        self.redirect('/races/' + str(race.key()))
+
+    def _process_photo_data(self, photo_data, rot=None):
+        photo = images.Image(photo_data)
+        if rot:
+            photo.rotate(int(rot));
+        photo.resize(width=220)
+        photo.im_feeling_lucky()
+        return photo
+
+    def _extract_time(self, photo_data):
+        try:
+            exif_time = jpeg.Exif(photo_data)["DateTimeDigitized"]
         except ValueError:
-            self.redirect('/?fail=Oj! Bilderna har ej korrekt EXIF data.')
-        else:
-            totalTime = race.finishTime - race.startTime
-            
-            race.totalTime = totalTime.seconds
-            
-            if self.request.get("extra") :
-                race.extra = self.request.get("extra")
-            race.user = users.get_current_user()
-            if race.finishTime<=race.startTime:
-                self.redirect('/?fail=Oj! Bilderna i fel ordning.')
-            else:
-                race.put()
-                self.redirect('/races/' + str(race.key()))
+            raise ValidationError("Bilderna har ej korrekt EXIF data.")
+        except KeyError:
+            raise ValidationError("Bilderna saknar tidsdata :(")
+        return datetime.strptime(exif_time, "%Y:%m:%d %H:%M:%S")
+
+    # def post(self):
+    #     race = Race()
+    #     try:
+    #         startTime = jpeg.Exif(self.request.get("start"))["DateTimeDigitized"]
+    #         race.startTime = datetime.strptime(startTime, "%Y:%m:%d %H:%M:%S")
+    #         startPhoto = images.Image(self.request.get("start"))
+    #         startPhoto.im_feeling_lucky()
+    #         if self.request.get("startrot") :
+    #             startPhoto.rotate(int(self.request.get("startrot")));
+    #         startPhoto.resize(width=220)
+    #         race.startPhoto = db.Blob(startPhoto.execute_transforms())
+    # 
+    #         finishTime = jpeg.Exif(self.request.get("finish"))["DateTimeDigitized"]
+    #         race.finishTime = datetime.strptime(finishTime, "%Y:%m:%d %H:%M:%S")
+    #         finishPhoto = images.Image(self.request.get("finish"))
+    #         finishPhoto.im_feeling_lucky()
+    #         if self.request.get("finishrot") :
+    #             finishPhoto.rotate(int(self.request.get("finishrot")));
+    #         finishPhoto.resize(width=220)
+    #         race.finishPhoto = db.Blob(finishPhoto.execute_transforms())
+    #     except ValueError:
+    #         self.redirect('/?fail=Oj! Bilderna har ej korrekt EXIF data.')
+    #     else:
+    #         totalTime = race.finishTime - race.startTime
+    #         
+    #         race.totalTime = totalTime.seconds
+    #         
+    #         if self.request.get("extra") :
+    #             race.extra = self.request.get("extra")
+    #         race.user = users.get_current_user()
+    #         if race.finishTime<=race.startTime:
+    #             self.redirect('/?fail=Oj! Bilderna i fel ordning.')
+    #         else:
+    #             race.put()
+    #             self.redirect('/races/' + str(race.key()))
         
 class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
