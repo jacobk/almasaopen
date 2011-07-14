@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if fail %}
-<p id="fail"><span>{{ fail }}</span></p>
-{% endif %}
 <div id="welcome" class="text-content grid_6">
 <h3 class="">
   Cykellopp, jämt <u>o</u> ständigt!
@@ -16,6 +13,19 @@
 </p>
   <div id="registration">
     <h3>Registrering</h3>
+    {% if fail %}
+    
+    <div id="fail" class="">
+      <div class="bullet grid_1 alpha">
+        <img src="/images/small_seal_red.png" />
+      </div>
+      <div class="message grid_4">
+          {{ fail }}
+      </div>
+    </div>
+    <div class="clear"></div>
+    {% endif %}
+    
 {% if current_user %}
     <form id="ulform" action="/upload" enctype="multipart/form-data" method="post">
       <div class="reg-step clearfix">

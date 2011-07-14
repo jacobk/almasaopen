@@ -342,7 +342,28 @@ a:active { color: #333 }
 
 /* Registration */
 
-#registration {
+#registration #fail .bullet {
+    height: 60px;
+    font-family: 'Podkova', sans-serif;
+    line-height: 60px;
+    text-align: center;
+    width: 58px;
+    border-left: 1px solid #f1f0ee;
+    border-right: 1px solid #f1f0ee;
+    font-size: 57px;
+
+}
+
+#registration #fail .message {
+    color: #AA0000;
+    font-size: 16px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-top: 1px dotted #aa0000;
+    border-bottom: 1px dotted #aa0000;
+    overflow: hidden;
 }
 
 #registration input[type="number"] {
