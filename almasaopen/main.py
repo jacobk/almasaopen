@@ -18,20 +18,25 @@ class ValidationError(AlmasaError):
     pass
 
 
+class Racer(db.Model):
+    user = db.UserProperty(required=True)
+    nickname = db.StringProperty()
+
+
 class Race(db.Model):
     """Datastore model for a race with a user, start- and finish photo"""
-    startPhoto = db.BlobProperty()
-    startTime = db.DateTimeProperty()
-    finishPhoto = db.BlobProperty()
-    finishTime = db.DateTimeProperty()
-    totalTime = db.IntegerProperty()
-    user = db.UserProperty()
+    start_photo = db.BlobProperty()
+    start_time = db.DateTimeProperty()
+    finish_photo = db.BlobProperty()
+    finish_time = db.DateTimeProperty()
+    total_time = db.IntegerProperty()
     extra = db.TextProperty()
+    racer = db.ReferenceProperty(Racer, collection_name="races")
 
 
 class Comment(db.Model):
     """Datastore model for comments to a race"""
-    user = db.UserProperty()
+    racer = db.ReferenceProperty(Racer, collection_name="comments")
     time = db.DateTimeProperty()
     comment = db.TextProperty()
     ref = db.ReferenceProperty(Race, collection_name="comments")
@@ -41,23 +46,34 @@ class BaseHandler(webapp.RequestHandler):
     def render(self, template_name, **kwargs):
         path = os.path.join(os.path.dirname(__file__), "templates",
                             template_name)
-        kwargs.update({"current_user": users.get_current_user()})
+        kwargs.update({"current_racer": self.current_racer,
+                       "logout": users.create_logout_url('/')})
         self.response.out.write(template.render(path, kwargs))
 
     @property
-    def current_user(self):
-        return users.get_current_user()
+    def current_racer(self):
+        current_user = users.get_current_user()
+        if current_user: # logged in
+            q = Racer.all()
+            q.filter("user =", current_user)
+            racer = q.get()
+            if not racer: # no corresponding racer entity
+                racer = Racer(user=current_user)
+                racer.nickname = current_user.nickname()
+                racer.put()
+            current_user = racer
+        return current_user
 
 
 class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
-        leader_since = (datetime.now() - leader.finishTime).days
-        leader_string = "%(days)d %(string)s" % \
-                {"days": leader_since,
-                "string": "dag" if leader_since==1 else "dagar"}
+        if leader:
+            leader_since = (datetime.now() - leader.finish_time).days
+            leader_string = "%(days)d %(string)s" % \
+                    {"days": leader_since,
+                    "string": "dag" if leader_since==1 else "dagar"}
         fail = self.request.get("fail", None)
-        logout = users.create_logout_url('/')
         login = users.create_login_url('/')
         home = True
         template_values = locals()
@@ -66,12 +82,12 @@ class MainHandler(BaseHandler):
 
     def make_scoreboard(self):
         races = Race.all()
-        races.order("totalTime")
+        races.order("total_time")
         shit_list = []
         race_list = []
         for race in races:
-            if race.user.nickname() not in shit_list:
-                shit_list.append(race.user.nickname())
+            if race.racer not in shit_list:
+                shit_list.append(race.racer.nickname)
                 race_list.append(race)
         for i, race in enumerate(race_list):
             race.position = i + 1
@@ -92,22 +108,21 @@ class UploadHandler(BaseHandler):
             self.redirect('/?fail=Oj! %s' % str(e))
 
     def _create_race(self, start_photo_data, finish_photo_data):
-        race = Race()
-        race.startTime = self._extract_time(start_photo_data)
-        race.finishTime = self._extract_time(finish_photo_data)
-        if race.finishTime < race.startTime:
+        race = Race(racer=self.current_racer)
+        race.start_time = self._extract_time(start_photo_data)
+        race.finish_time = self._extract_time(finish_photo_data)
+        if race.finish_time < race.start_time:
             raise ValidationError("Bilderna i fel ordning.")
         start_photo = self._process_photo_data(start_photo_data,
                                                self.request.get("startrot"))
         finish_photo = self._process_photo_data(finish_photo_data,
                                                 self.request.get("finishrot"))
-        race.startPhoto = db.Blob(start_photo.execute_transforms())
-        race.finishPhoto = db.Blob(finish_photo.execute_transforms())
-        total_time = race.finishTime - race.startTime
-        race.totalTime = total_time.seconds
+        race.start_photo = db.Blob(start_photo.execute_transforms())
+        race.finish_photo = db.Blob(finish_photo.execute_transforms())
+        total_time = race.finish_time - race.start_time
+        race.total_time = total_time.seconds
         if self.request.get("extra") :
             race.extra = self.request.get("extra")
-        race.user = self.current_user
         race.put()
         self.redirect('/races/' + str(race.key()))
 
@@ -137,21 +152,21 @@ class BasePhotoHandler(BaseHandler):
         self.response.out.write(getattr(race, photo_type))
 
 
-class StartPhotoHandler(BasePhotoHandler):
+class start_photoHandler(BasePhotoHandler):
     def get(self, race_id):
-        self.serve_photo(race_id, "startPhoto")
+        self.serve_photo(race_id, "start_photo")
 
 
-class FinishPhotoHandler(BasePhotoHandler):
+class finish_photoHandler(BasePhotoHandler):
     def get(self, race_id):
-        self.serve_photo(race_id, "finishPhoto")
+        self.serve_photo(race_id, "finish_photo")
 
 
 class CommentsHandler(BaseHandler):
     """Handler for comments"""
     def post(self, *ar):
         comment = Comment()
-        comment.user = users.get_current_user()
+        comment.racer = self.current_racer
         comment.comment = self.request.get('comment')
         comment.time = datetime.now()
         comment.ref = db.get(ar[0])
@@ -162,7 +177,7 @@ class CommentsHandler(BaseHandler):
 class CommentHandler(BaseHandler):
     def post(self, race_id, comment_id):
         comment = db.get(comment_id)
-        if users.get_current_user() == comment.user :
+        if self.current_racer.key() == comment.racer.key() :
             comment.delete()
         self.redirect("/races/%s" % race_id)
 
@@ -174,7 +189,6 @@ class ShowRace(BaseHandler):
         template_values = {}
         template_values['id'] = ar[0]
         template_values['race'] = race
-        template_values['logout'] = users.create_logout_url('/')
         self.render("showrace.html", **template_values)
 
 
@@ -184,12 +198,11 @@ class RemoveRace(BaseHandler):
         race = db.get(ar[0])
         template_values = {}
         template_values['id'] = ar[0]
-        template_values['username'] = race.user.nickname()
-        template_values['starttime'] = race.startTime
-        template_values['finishtime'] = race.finishTime
-        template_values['totaltime'] = race.totalTime
-        template_values['currentuser'] = users.get_current_user()
-        template_values['logout'] = users.create_logout_url('/')
+        template_values['username'] = race.racer.nickname
+        template_values['start_time'] = race.start_time
+        template_values['finish_time'] = race.finish_time
+        template_values['total_time'] = race.total_time
+        
         self.render("remove.html", **template_values)
 
     def post(self, *ar):
@@ -202,25 +215,60 @@ class MyRaces(BaseHandler):
     @login_required
     def get(self):
         races = Race.all()
-        races.filter("user =", users.get_current_user())
-        races.order("-startTime")
+        races.filter("racer =", self.current_racer)
+        races.order("-start_time")
         template_values = {}
-
         template_values['races'] = races
-        template_values['currentuser'] = users.get_current_user()
-        template_values['logout'] = users.create_logout_url('/')
         self.render("myraces.html", **template_values)
 
 
 class Information(BaseHandler):
     """Handler for the information page"""
     def get(self):
-        
         template_values = {}
-
-        template_values['currentuser'] = users.get_current_user()
-        template_values['logout'] = users.create_logout_url('/')
         self.render("info.html", **template_values)
+
+
+class RacersHandler(BaseHandler):
+    def get(self):
+        pass
+
+
+class MigrateHandler(webapp.RequestHandler):
+    def user_to_racer(self, user):
+        rq = Racer.all()
+        rq.filter("user =", user)
+        racer = rq.get()
+        if not racer:
+            racer = Racer(user=user)
+            racer.nickname = user.nickname()
+            racer.put()
+        return racer
+    
+    def get(self):
+        q = Race.all()
+        for r in q:
+            # Access the internal Model represantation to get removed property
+            user = user=r._entity["user"]
+            racer = self.user_to_racer(user)
+            new_race = Race()
+            new_race.start_photo = r._entity["startPhoto"]
+            new_race.start_time = r._entity["startTime"]
+            new_race.finish_photo = r._entity["finishPhoto"]
+            new_race.finish_time = r._entity["finishTime"]
+            new_race.total_time = r._entity["totalTime"]
+            new_race.extra = r.extra
+            new_race.racer = racer
+            new_race.put()
+            for c in r.comments:
+                new_comment = Comment()
+                new_comment.racer = self.user_to_racer(c._entity["user"])
+                new_comment.time = c.time
+                new_comment.comment = c.comment
+                new_comment.ref = new_race
+                new_comment.put()
+                c.delete()
+            r.delete()
 
 
 def main():
@@ -228,14 +276,16 @@ def main():
     
     application = webapp.WSGIApplication([('/', MainHandler),
                                         ('/upload', UploadHandler),
-                                        ('/races/([^/]*)/photos/start', StartPhotoHandler),
-                                        ('/races/([^/]*)/photos/finish', FinishPhotoHandler),
+                                        ('/races/([^/]*)/photos/start', start_photoHandler),
+                                        ('/races/([^/]*)/photos/finish', finish_photoHandler),
                                         ('/races/([^/]*)/comments', CommentsHandler),
                                         ('/races/([^/]*)/comments/(.*)', CommentHandler),
                                         ('/races/([^/]*)', ShowRace),
                                         ('/removerace/(.*)', RemoveRace),
                                         ('/myraces', MyRaces),
-                                        ('/info', Information)],
+                                        ('/info', Information),
+                                        ('/racers', RacersHandler),
+                                        ('/migrate_data', MigrateHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 

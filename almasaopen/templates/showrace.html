@@ -4,7 +4,7 @@
 <div id="race-view" class="grid_6">
   <h3>Tjik!</h3>
   <p>
-    Året var {{race.startTime|formaty}}. {{race.user}} begav sig den {{race.startTime|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.user}} påbörjade sin färd klockan {{race.startTime|formatt}} och den varade ända tills klockan {{race.finishTime|formatt}}. Hela resan varade, rätt exakt, i {{race.totalTime|format}} timmar, minuter och sekunder. Cool story bro!
+    Året var {{race.start_time|formaty}}. {{race.racer.nickname|escape}} begav sig den {{race.start_time|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.user}} påbörjade sin färd klockan {{race.start_time|formatt}} och den varade ända tills klockan {{race.finish_time|formatt}}. Hela resan varade, rätt exakt, i {{race.total_time|format}} timmar, minuter och sekunder. Cool story bro!
   </p>
     {% if race.extra %}
     <p id="extralink">{{ race.extra|escape }}</p>
@@ -16,11 +16,11 @@
             <img src="/images/small_seal.png" />
           </div>
           <div class="grid_4">
-              <div class="name">{{ comment.user|escape }}</div>
+              <div class="name">{{ comment.racer.nickname|escape }}</div>
               <div class="date">{{ comment.time|formatd }}  {{ comment.time|formatt }}</div>
           </div>
           <div class="delete grid_1 omega">
-            {% ifequal comment.user current_user %}
+            {% ifequal comment.racer.key current_racer.key %}
             <form action="/races/{{ id }}/comments/{{ comment.key }}" method="post" accept-charset="utf-8">
               <input type="submit" value="Radera">
             </form>
@@ -34,7 +34,7 @@
         </div>
         <div class="clear"></div>
     {% endfor %}
-    {% if current_user %}
+    {% if current_racer %}
     <form id="commentform" action="/races/{{ id }}/comments" method="post" accept-charset="utf-8">
         <textarea name="comment" placeholder="Kommentera loppet!"></textarea>
     <p><input type="submit" value="Kommentera"></p>

@@ -46,14 +46,15 @@
         <ul>
             <li><a href="/">Start</a></li>
             <li><a href="/info">Regler</a></li>
-          {% if current_user %}
+            <!-- <li><a href="/racers">Deltagare</a></li> -->
+          {% if current_racer %}
             <li><a href="/myraces">Min sida</a></li>
             <li><a href="{{ logout }}">Logga ut</a></li>
           {% endif %}
         </ul>
       </nav>
-      {% if current_user %}
-        Inloggad som {{ current_user.nickname|escape }}
+      {% if current_racer %}
+        Inloggad som {{ current_racer.nickname|escape }}
       {% endif %}
     </header>
     {% block content %}{% endblock %}
