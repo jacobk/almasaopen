@@ -4,4 +4,4 @@ We did it before it was cool
 
 ## License
 
-TODO
+WTFPL
