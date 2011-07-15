@@ -52,6 +52,8 @@ class BaseHandler(webapp.RequestHandler):
 
     @property
     def current_racer(self):
+        if hasattr(self, "_current_user"):
+            return self._current_user
         current_user = users.get_current_user()
         if current_user: # logged in
             q = Racer.all()
@@ -62,7 +64,8 @@ class BaseHandler(webapp.RequestHandler):
                 racer.nickname = current_user.nickname()
                 racer.put()
             current_user = racer
-        return current_user
+        self._current_user = current_user
+        return self._current_user
 
 
 class MainHandler(BaseHandler):
@@ -234,6 +237,14 @@ class RacersHandler(BaseHandler):
         pass
 
 
+class RacerHandler(BaseHandler):
+    def post(self, racer_id):
+        if self.current_racer:
+            self.current_racer.nickname = self.request.get("name")
+            self.current_racer.put()
+        self.redirect("/myraces")
+
+
 class MigrateHandler(webapp.RequestHandler):
     def user_to_racer(self, user):
         rq = Racer.all()
@@ -284,6 +295,7 @@ def main():
                                         ('/removerace/(.*)', RemoveRace),
                                         ('/myraces', MyRaces),
                                         ('/info', Information),
+                                        ('/racers/(.*)', RacerHandler),
                                         ('/racers', RacersHandler),
                                         ('/migrate_data', MigrateHandler)],
                                          debug=True)

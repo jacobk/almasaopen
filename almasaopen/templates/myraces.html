@@ -25,9 +25,9 @@
   <div class="setting">
     <div class="name-label grid_1 alpha">Namn</div>
     <div class="namn">
-      <form action="/users/{{current_racer.key}}" method="post" accept-charset="utf-8">
+      <form action="/racers/{{current_racer.key}}" method="post" accept-charset="utf-8">
         <input type="text" name="name" placeholder="{{ current_racer.nickname|escape }}" id="name">
-        <p><input type="submit" disabled="disabled" value="Spara"></p>
+        <p><input type="submit" value="Spara"></p>
       </form>
     </div>
   </div>
