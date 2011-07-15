@@ -259,7 +259,7 @@ def main():
                                         ('/myraces', MyRaces),
                                         ('/info', Information),
                                         ('/racers/(.*)', RacerHandler),
-                                        ('/racers', RacersHandler),
+                                        ('/racers', RacersHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 
