@@ -245,43 +245,6 @@ class RacerHandler(BaseHandler):
         self.redirect("/myraces")
 
 
-class MigrateHandler(webapp.RequestHandler):
-    def user_to_racer(self, user):
-        rq = Racer.all()
-        rq.filter("user =", user)
-        racer = rq.get()
-        if not racer:
-            racer = Racer(user=user)
-            racer.nickname = user.nickname()
-            racer.put()
-        return racer
-    
-    def get(self):
-        q = Race.all()
-        for r in q:
-            # Access the internal Model represantation to get removed property
-            user = user=r._entity["user"]
-            racer = self.user_to_racer(user)
-            new_race = Race()
-            new_race.start_photo = r._entity["startPhoto"]
-            new_race.start_time = r._entity["startTime"]
-            new_race.finish_photo = r._entity["finishPhoto"]
-            new_race.finish_time = r._entity["finishTime"]
-            new_race.total_time = r._entity["totalTime"]
-            new_race.extra = r.extra
-            new_race.racer = racer
-            new_race.put()
-            for c in r.comments:
-                new_comment = Comment()
-                new_comment.racer = self.user_to_racer(c._entity["user"])
-                new_comment.time = c.time
-                new_comment.comment = c.comment
-                new_comment.ref = new_race
-                new_comment.put()
-                c.delete()
-            r.delete()
-
-
 def main():
     webapp.template.register_template_library('filters')
     
@@ -297,7 +260,6 @@ def main():
                                         ('/info', Information),
                                         ('/racers/(.*)', RacerHandler),
                                         ('/racers', RacersHandler),
-                                        ('/migrate_data', MigrateHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 
