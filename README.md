@@ -1,5 +1,7 @@
-First!
+# The Amazing Appengine Based Road Competition Framework!
 
-## TODO
+We did it before it was cool
 
-* Fix the bug that causes photos to always display in landscape mode
+## License
+
+TODO
