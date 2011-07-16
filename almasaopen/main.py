@@ -191,7 +191,7 @@ class CommentsHandler(BaseHandler):
 class CommentHandler(BaseHandler):
     def post(self, race_id, comment_id):
         comment = db.get(comment_id)
-        if self.current_racer.key() == comment.racer.key() :
+        if self.current_racer == comment.racer :
             comment.delete()
         self.redirect("/races/%s" % race_id)
 
