@@ -9,7 +9,6 @@ import os
 # TODO: Move vogel to vendor
 import jpeg
 
-
 class AlmasaError(Exception):
     """Base class for all exceptions in the almasa main module"""
 
@@ -82,11 +81,6 @@ class BaseHandler(webapp.RequestHandler):
 class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
-        if leader:
-            leader_since = (datetime.now() - leader.finish_time).days
-            leader_string = "%(days)d %(string)s" % \
-                    {"days": leader_since,
-                    "string": "dag" if leader_since==1 else "dagar"}
         fail = self.request.get("fail", None)
         login = users.create_login_url('/')
         home = True

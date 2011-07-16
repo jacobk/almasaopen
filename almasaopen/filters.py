@@ -1,6 +1,8 @@
 from google.appengine.ext import webapp
 from datetime import datetime, timedelta, date
 
+import util
+
 _SE_MONTH_NAMES = {
     1: "januari", 2: "februari", 3: "mars", 4: "april", 5: "maj", 6: "juni",
     7: "juli", 8: "augusti", 9: "september", 10: "oktober", 11: "november",
@@ -34,6 +36,12 @@ def formaty(indate):
     """Format datetime to just time"""
     return indate.strftime("%Y")
 
+def duration_from_now(dt):
+    tzinfo = util.CET()
+    awareified_dt = dt.replace(tzinfo=tzinfo)
+    duration = datetime.now(tz=tzinfo) - awareified_dt
+    return util.duration_to_text(duration)
+
 
 register.filter(format)
 register.filter(formatd)
@@ -41,3 +49,4 @@ register.filter(formatdv)
 register.filter(formatdvsy)
 register.filter(formatt)
 register.filter(formaty)
+register.filter(duration_from_now)
