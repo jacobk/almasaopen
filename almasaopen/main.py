@@ -22,6 +22,17 @@ class Racer(db.Model):
     user = db.UserProperty(required=True)
     nickname = db.StringProperty()
 
+    def __eq__(self, other):
+         if isinstance(other, Racer):
+             return self.user == other.user
+         return NotImplemented
+
+    def __ne__(self, other):
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return result
+        return not result
+
 
 class Race(db.Model):
     """Datastore model for a race with a user, start- and finish photo"""
@@ -90,7 +101,7 @@ class MainHandler(BaseHandler):
         race_list = []
         for race in races:
             if race.racer not in shit_list:
-                shit_list.append(race.racer.nickname)
+                shit_list.append(race.racer)
                 race_list.append(race)
         for i, race in enumerate(race_list):
             race.position = i + 1
