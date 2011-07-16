@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+{% block extrahead %}
+<meta property="og:title" content="Almåsa Öppna Lopp" />
+<meta property="og:type" content="activity" />
+<meta property="og:url" content="http://almasaopen.appspot.com/races/{{ race.key }}" />
+<meta property="og:image" content="http://almasaopen.appspot.com/races/{{ race.key }}/photos/finish" />
+<meta property="og:site_name" content="Almåsa Öppna" />
+<meta property="fb:admins" content="609464251" />
+{% endblock %}
 
 {% block content %}
 <div id="race-view" class="grid_6">
@@ -9,6 +17,7 @@
     {% if race.extra %}
     <p id="extralink">{{ race.extra|escape }}</p>
     {% endif %}
+    <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=184950834898695&amp;xfbml=1"></script><fb:like href="http://almasaopen.appspot.com/races/{{ race.key }}" send="true" width="460" show_faces="true" action="like" font=""></fb:like>
     <h3>Kommentarer</h3>
     {% for comment in race.comments %}
         <div class="comment clearfix">
