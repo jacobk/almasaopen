@@ -202,6 +202,7 @@ class ShowRace(BaseHandler):
         race = db.get(ar[0])
         template_values = {}
         template_values['id'] = ar[0]
+        template_values['comments'] = race.comments.order("-time")
         template_values['race'] = race
         self.render("showrace.html", **template_values)
 
