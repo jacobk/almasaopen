@@ -228,12 +228,11 @@ class MyRaces(BaseHandler):
     """Handler to show all of a specific users races"""
     @login_required
     def get(self):
-        races = Race.all()
-        races.filter("racer =", self.current_racer)
-        races.order("-start_time")
-        template_values = {}
-        template_values['races'] = races
-        self.render("myraces.html", **template_values)
+        q = Race.all()
+        q.filter("racer =", self.current_racer)
+        q.order("-start_time")
+        races = [race for race in q.run()]
+        self.render("myraces.html", races=races)
 
 
 class Information(BaseHandler):

@@ -3,21 +3,23 @@
 {% block content %}
 <div id="myraces" class="grid_12">
   <h3>Curricadence Vitae</h3>
-  <table border="0">
-  	<tr><th>Datum</th><th>Starttid</th><th>Måltid</th><th>Totaltid</th><th>Kommentar</th><th></th><th></th></tr>
-  	{% for race in races %}
-  	<tr>
-  		<td>{{race.start_time|formatd}}</td>
-  		<td>{{race.start_time|formatt}}</td>
-  		<td>{{race.finish_time|formatt}}</td>
-  		<td>{{race.total_time|format}}</td>
-  		<td>{% if race.extra %}{{race.extra|escape}}{% endif %}</td>
-  		<td><a href="/races/{{race.key}}">Visa loppet</a></td>
-  		<td><a href="/removerace/{{race.key}}">Radera loppet</a></td>
-  	</tr>
-  	{% endfor %}
-  </table>
-  
+  {% if races %}
+    <table border="0">      <tr><th>Datum</th><th>Starttid</th><th>Måltid</th><th>Totaltid</th><th>Kommentar</th><th></th><th></th></tr>
+      {% for race in races %}
+      <tr>
+        <td>{{race.start_time|formatd}}</td>
+        <td>{{race.start_time|formatt}}</td>
+        <td>{{race.finish_time|formatt}}</td>
+        <td>{{race.total_time|format}}</td>
+        <td>{% if race.extra %}{{race.extra|escape}}{% endif %}</td>
+        <td><a href="/races/{{race.key}}">Visa loppet</a></td>
+        <td><a href="/removerace/{{race.key}}">Radera loppet</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+  {{ current_racer.nickname|escape }} är fet och slö och har inte pallat cykla ännu.
+  {% endif %}
 </div>
 
 <div id="settings" class="grid_12">
