@@ -419,6 +419,10 @@ a:active { color: #333 }
   word-wrap: break-word;
 }
 
+#race-view #fb-share {
+    margin-bottom: 15px;
+}
+
 #race-view .comment-bullet {
     height: 60px;
     font-family: 'Podkova', sans-serif;

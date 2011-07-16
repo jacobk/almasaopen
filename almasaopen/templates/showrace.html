@@ -17,7 +17,9 @@
     {% if race.extra %}
     <p id="extralink">{{ race.extra|escape }}</p>
     {% endif %}
-    <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=184950834898695&amp;xfbml=1"></script><fb:like href="http://almasaopen.appspot.com/races/{{ race.key }}" send="true" width="460" show_faces="true" action="like" font=""></fb:like>
+    <div id="fb-share" class="clearfix">
+      <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=184950834898695&amp;xfbml=1"></script><fb:like href="http://almasaopen.appspot.com/races/{{ race.key }}" send="true" width="460" show_faces="false" action="like" font=""></fb:like>
+    </div>
     <h3>Kommentarer</h3>
     {% for comment in race.comments %}
         <div class="comment clearfix">
