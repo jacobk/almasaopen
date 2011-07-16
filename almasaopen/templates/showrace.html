@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block extrahead %}
-<meta property="og:title" content="Almåsa Öppna Lopp" />
+<meta property="og:title" content="{{ race.racer.nickname|escape }} körde Almåsa Öppna på {{ race.total_time|format }}!" />
 <meta property="og:type" content="activity" />
 <meta property="og:url" content="http://almasaopen.appspot.com/races/{{ race.key }}" />
 <meta property="og:image" content="http://almasaopen.appspot.com/races/{{ race.key }}/photos/finish" />
