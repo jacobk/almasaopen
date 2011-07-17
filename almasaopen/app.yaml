@@ -12,6 +12,7 @@ handlers:
   
 - url: /images
   static_dir: images
+  expiration: "365d"
 
 - url: /favicon.ico
   static_files: images/favicon.ico

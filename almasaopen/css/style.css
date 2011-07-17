@@ -102,7 +102,7 @@ sup { vertical-align: super; font-size: smaller; }
 /* Global */
 
 body {
-  background: #fffffe url("/images/header_fill_01.png") repeat-x;
+  background: #fffffe url("/images/header_fill_01.png?v=1") repeat-x;
   font-family: 'Maven Pro', cursive;
   font-size: 14px;
 }
@@ -136,7 +136,7 @@ a:active { color: #333 }
 /* Header */
 
 #header {
-  background: #FFF url("/images/header_01.png") no-repeat;
+  background: #FFF url("/images/header_01.png?v=1") no-repeat;
   color: #9C9C9C;
   height: 177px;
   font-family: 'Raleway', sans-serif;
