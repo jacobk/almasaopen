@@ -84,7 +84,6 @@ class BaseHandler(webapp.RequestHandler):
         self._current_user = current_user
         return self._current_user
 
-
 class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
@@ -227,7 +226,8 @@ class RemoveRace(BaseHandler):
         self.render("remove.html", **template_values)
 
     def post(self, *ar):
-        db.get(ar[0]).delete()
+        if self.current_racer:
+            db.get(ar[0]).delete()
         self.redirect('/?fail=Lopp raderat.')
 
 
@@ -249,7 +249,7 @@ class RacersHandler(BaseHandler):
 
 class RacerHandler(BaseHandler):
     def post(self, racer_id):
-        if self.current_racer:
+        if self.current_racer and self.request.get("name")!="":
             self.current_racer.nickname = self.request.get("name")
             self.current_racer.put()
         self.redirect("/racers/%s" % racer_id)

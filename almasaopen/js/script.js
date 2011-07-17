@@ -32,6 +32,7 @@ jQuery.fn.rotate = function() {
     };
 }
 
+
 $(document).ready(function () {
 
     $("#extra").click(function() {
