@@ -163,13 +163,12 @@ class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
     def serve_photo(self, race_id, photo_type):
         race = db.get(race_id)
-        self.response.headers.add_header("Content-Type", 'image/jpeg')
+        self.response.headers["Content-Type"] = 'image/jpeg'
         d = datetime.datetime.utcnow() + datetime.timedelta(days=365*10)
         t = calendar.timegm(d.utctimetuple())
-        self.response.headers.add_header("Expires", email.utils.formatdate(t,
-                                         localtime=False, usegmt=True))
-        self.response.headers.add_header("Cache-Control",
-                                         "max-age=" + str(86400*365*10))
+        self.response.headers["Expires"] = email.utils.formatdate(t,
+                                                  localtime=False, usegmt=True)
+        self.response.headers["Cache-Control"] = "max-age=" + str(86400*365*10)
         self.response.out.write(getattr(race, photo_type))
 
 
