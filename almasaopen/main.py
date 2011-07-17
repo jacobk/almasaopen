@@ -160,12 +160,12 @@ class BasePhotoHandler(BaseHandler):
         self.response.out.write(getattr(race, photo_type))
 
 
-class start_photoHandler(BasePhotoHandler):
+class StartPhotoHandler(BasePhotoHandler):
     def get(self, race_id):
         self.serve_photo(race_id, "start_photo")
 
 
-class finish_photoHandler(BasePhotoHandler):
+class FinishPhotoHandler(BasePhotoHandler):
     def get(self, race_id):
         self.serve_photo(race_id, "finish_photo")
 
@@ -255,8 +255,8 @@ def main():
     
     application = webapp.WSGIApplication([('/', MainHandler),
                                         ('/upload', UploadHandler),
-                                        ('/races/([^/]*)/photos/start', start_photoHandler),
-                                        ('/races/([^/]*)/photos/finish', finish_photoHandler),
+                                        ('/races/([^/]*)/photos/start', StartPhotoHandler),
+                                        ('/races/([^/]*)/photos/finish', FinishPhotoHandler),
                                         ('/races/([^/]*)/comments', CommentsHandler),
                                         ('/races/([^/]*)/comments/(.*)', CommentHandler),
                                         ('/races/([^/]*)', ShowRace),
