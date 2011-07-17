@@ -1,7 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for racer in racers %}
-{{ racer.nickname }}<br />
-{% endfor %}
+<div id="participants" class="grid_12">
+  <h3>Deltagare</h3>
+  <div class="racer-column grid_4 alpha">
+  {% for racer in col1 %}
+    <div class="racer">
+      <div class="bullet grid_1 alpha">
+        <img src="/images/small_seal.png?v=1" />
+      </div>
+      <div class="name grid_3 omega">
+        <a href="/racers/{{ racer.key }}">{{racer.nickname|escape}}</a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  {% endfor %}
+  </div>
+  <div class="racer-column grid_4">
+  {% for racer in col2 %}
+    <div class="racer">
+      <div class="bullet grid_1 alpha">
+        <img src="/images/small_seal.png?v=1" />
+      </div>
+      <div class="name grid_3 omega">
+        <a href="/racers/{{ racer.key }}">{{racer.nickname|escape}}</a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  {% endfor %}
+  </div>
+  <div class="racer-column grid_4 omega">
+  {% for racer in col3 %}
+    <div class="racer">
+      <div class="bullet grid_1 alpha">
+        <img src="/images/small_seal.png?v=1" />
+      </div>
+      <div class="name grid_3 omega">
+        <a href="/racers/{{ racer.key }}">{{racer.nickname|escape}}</a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  {% endfor %}
+  </div>
+</div>
+
 {% endblock %}

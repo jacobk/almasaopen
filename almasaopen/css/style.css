@@ -554,6 +554,33 @@ a:active { color: #333 }
   
 }
 
+/* Racers */
+
+#participants .racer .bullet {
+    height: 60px;
+    font-family: 'Podkova', sans-serif;
+    line-height: 60px;
+    text-align: center;
+    width: 58px;
+    border-left: 1px solid #f1f0ee;
+    border-right: 1px solid #f1f0ee;
+    font-size: 57px;
+}
+
+#participants .name {
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  height: 30px;
+  line-height: 60px;
+}
+
+#participants .racer {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+
+
 /*
  * Media queries for responsive design
  * These follow after primary styles so they will successfully override. 

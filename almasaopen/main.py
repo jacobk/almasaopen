@@ -15,6 +15,7 @@ from google.appengine.ext.webapp.util import login_required
 import jpeg
 import util
 
+
 class AlmasaError(Exception):
     """Base class for all exceptions in the almasa main module"""
 
@@ -184,13 +185,13 @@ class FinishPhotoHandler(BasePhotoHandler):
 
 class CommentsHandler(BaseHandler):
     """Handler for comments"""
-    def post(self, *ar):
+    def post(self, race_id):
         comment = Comment()
         comment.racer = self.current_racer
         comment.comment = self.request.get('comment')
-        comment.ref = db.get(ar[0])
+        comment.ref = db.get(race_id)
         comment.put()
-        self.redirect('/races/' + ar[0])
+        self.redirect('/races/' + race_id)
 
 
 class CommentHandler(BaseHandler):
@@ -201,12 +202,12 @@ class CommentHandler(BaseHandler):
         self.redirect("/races/%s" % race_id)
 
 
-class ShowRace(BaseHandler):
+class RaceHandler(BaseHandler):
     """Handler to show a specific race"""
-    def get(self, *ar):
-        race = db.get(ar[0])
+    def get(self, race_id):
+        race = db.get(race_id)
         template_values = {}
-        template_values['id'] = ar[0]
+        template_values['id'] = race_id
         template_values['comments'] = race.comments.order("-time")
         template_values['race'] = race
         self.render("showrace.html", **template_values)
@@ -230,17 +231,6 @@ class RemoveRace(BaseHandler):
         self.redirect('/?fail=Lopp raderat.')
 
 
-class MyRaces(BaseHandler):
-    """Handler to show all of a specific users races"""
-    @login_required
-    def get(self):
-        q = Race.all()
-        q.filter("racer =", self.current_racer)
-        q.order("-start_time")
-        races = [race for race in q.run()]
-        self.render("myraces.html", races=races)
-
-
 class Information(BaseHandler):
     """Handler for the information page"""
     def get(self):
@@ -250,7 +240,11 @@ class Information(BaseHandler):
 
 class RacersHandler(BaseHandler):
     def get(self):
-        pass
+        q = Racer.all()
+        key = lambda x: x.nickname.lower()
+        racers = sorted([racer for racer in q], key=key)
+        self.render("racers.html", col1=racers[0::3], col2=racers[1::3],
+                    col3=racers[2::3])
 
 
 class RacerHandler(BaseHandler):
@@ -258,7 +252,15 @@ class RacerHandler(BaseHandler):
         if self.current_racer:
             self.current_racer.nickname = self.request.get("name")
             self.current_racer.put()
-        self.redirect("/myraces")
+        self.redirect("/racers/%s" % racer_id)
+
+    def get(self, racer_id):
+        racer = Racer.get(racer_id)
+        q = Race.all()
+        q.filter("racer =", racer)
+        q.order("-start_time")
+        races = [race for race in q.run()]
+        self.render("racer.html", racer=racer, races=races)
 
 
 def main():
@@ -270,9 +272,8 @@ def main():
                                         ('/races/([^/]*)/photos/finish', FinishPhotoHandler),
                                         ('/races/([^/]*)/comments', CommentsHandler),
                                         ('/races/([^/]*)/comments/(.*)', CommentHandler),
-                                        ('/races/([^/]*)', ShowRace),
+                                        ('/races/([^/]*)', RaceHandler),
                                         ('/removerace/(.*)', RemoveRace),
-                                        ('/myraces', MyRaces),
                                         ('/info', Information),
                                         ('/racers/(.*)', RacerHandler),
                                         ('/racers', RacersHandler)],
