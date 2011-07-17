@@ -1,13 +1,19 @@
 #!/usr/bin/env python
+import calendar
+import datetime
+import email.utils
+import logging
+import os
+
 from google.appengine.ext import webapp, db
-from google.appengine.ext.webapp import util, template
+from google.appengine.ext.webapp import template
+import google.appengine.ext.webapp.util
 from google.appengine.api import images, users
 from google.appengine.ext.webapp.util import login_required
-from datetime import datetime, timedelta
-import os
 
 # TODO: Move vogel to vendor
 import jpeg
+import util
 
 class AlmasaError(Exception):
     """Base class for all exceptions in the almasa main module"""
@@ -47,7 +53,7 @@ class Race(db.Model):
 class Comment(db.Model):
     """Datastore model for comments to a race"""
     racer = db.ReferenceProperty(Racer, collection_name="comments")
-    time = db.DateTimeProperty()
+    time = db.DateTimeProperty(auto_now_add=True)
     comment = db.TextProperty()
     ref = db.ReferenceProperty(Race, collection_name="comments")
 
@@ -149,14 +155,21 @@ class UploadHandler(BaseHandler):
             raise ValidationError("Bilderna har ej korrekt EXIF data.")
         except KeyError:
             raise ValidationError("Bilderna saknar tidsdata :(")
-        return datetime.strptime(exif_time, "%Y:%m:%d %H:%M:%S")
+        dt = datetime.datetime.strptime(exif_time, "%Y:%m:%d %H:%M:%S")
+        return util.cet_as_utc(dt)
 
 
 class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
     def serve_photo(self, race_id, photo_type):
         race = db.get(race_id)
-        self.response.headers['Content-Type'] = 'image/jpeg'
+        self.response.headers.add_header("Content-Type", 'image/jpeg')
+        d = datetime.datetime.utcnow() + datetime.timedelta(days=365*10)
+        t = calendar.timegm(d.utctimetuple())
+        self.response.headers.add_header("Expires", email.utils.formatdate(t,
+                                         localtime=False, usegmt=True))
+        self.response.headers.add_header("Cache-Control",
+                                         "max-age=" + str(86400*365*10))
         self.response.out.write(getattr(race, photo_type))
 
 
@@ -176,7 +189,6 @@ class CommentsHandler(BaseHandler):
         comment = Comment()
         comment.racer = self.current_racer
         comment.comment = self.request.get('comment')
-        comment.time = datetime.now()
         comment.ref = db.get(ar[0])
         comment.put()
         self.redirect('/races/' + ar[0])
@@ -250,6 +262,16 @@ class RacerHandler(BaseHandler):
         self.redirect("/myraces")
 
 
+class UTCMigrater(webapp.RequestHandler):
+    def get(self):
+        q = Race.all()
+        for race in q:
+            race.start_time = util.cet_as_utc(race.start_time)
+            race.finish_time = util.cet_as_utc(race.finish_time)
+            race.put()
+        self.response.out.write("DONE!")
+
+
 def main():
     webapp.template.register_template_library('filters')
     
@@ -264,9 +286,10 @@ def main():
                                         ('/myraces', MyRaces),
                                         ('/info', Information),
                                         ('/racers/(.*)', RacerHandler),
+                                        ('/convert_to_utc', UTCMigrater),
                                         ('/racers', RacersHandler)],
                                          debug=True)
-    util.run_wsgi_app(application)
+    google.appengine.ext.webapp.util.run_wsgi_app(application)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,18 @@ import datetime
 HOUR_SEC = 3600
 MIN_SEC = 60
 
+class UTC(datetime.tzinfo):
+
+    ZERO = datetime.timedelta(0)
+
+    def utcoffset(self, dt):
+        return self.ZERO
+
+    def dst(self, dt):
+        return self.ZERO
+TZ_UTC = UTC()
+
+
 class CET(datetime.tzinfo):
 
     HOUR = datetime.timedelta(hours=1)
@@ -22,6 +34,7 @@ class CET(datetime.tzinfo):
 
     def tzname(self,dt):
          return "CET"
+TZ_CET = CET()
 
 
 def pluralize(count, singular, plural):
@@ -38,4 +51,12 @@ def duration_to_text(duration):
     minutes, rest = divmod(rest, MIN_SEC)
     if minutes:
         return pluralize(minutes, "minut", "minuter")
-    return pluralize(rest, "sekund", "sekunder")    
+    return pluralize(rest, "sekund", "sekunder")
+
+
+def utc_as_cet(dt):
+    return dt.replace(tzinfo=TZ_UTC).astimezone(TZ_CET)
+
+
+def cet_as_utc(dt):
+    return dt.replace(tzinfo=TZ_CET).astimezone(TZ_UTC)

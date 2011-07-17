@@ -1,5 +1,7 @@
+import logging
+import datetime
+
 from google.appengine.ext import webapp
-from datetime import datetime, timedelta, date
 
 import util
 
@@ -13,33 +15,31 @@ register = webapp.template.create_template_register()
 
 def format(time):
     """Format seconds to HH:MM:SS format"""
-    return str(timedelta(seconds=time))
+    return str(datetime.timedelta(seconds=time))
 
 def formatd(indate):
     """Format datetime to just date"""
-    return indate.strftime("%Y-%m-%d")
+    return util.utc_as_cet(indate).strftime("%Y-%m-%d")
   
 def formatdv(indate):
     """Format datetime to just date"""
     month_name = _SE_MONTH_NAMES.get(indate.month, "sommari")
-    return indate.strftime("%d %%s %Y") % month_name
+    return util.utc_as_cet(indate).strftime("%d %%s %Y") % month_name
 
 def formatdvsy(indate):
     month_name = _SE_MONTH_NAMES.get(indate.month, "sommari")
-    return indate.strftime("%d %%s") % month_name
+    return util.utc_as_cet(indate).strftime("%d %%s") % month_name
   
 def formatt(indate):
     """Format datetime to just time"""
-    return indate.strftime("%H:%M:%S")
+    return util.utc_as_cet(indate).strftime("%H:%M:%S")
 
 def formaty(indate):
     """Format datetime to just time"""
-    return indate.strftime("%Y")
+    return util.utc_as_cet(indate).strftime("%Y")
 
 def duration_from_now(dt):
-    tzinfo = util.CET()
-    awareified_dt = dt.replace(tzinfo=tzinfo)
-    duration = datetime.now(tz=tzinfo) - awareified_dt
+    duration = datetime.datetime.utcnow() - dt
     return util.duration_to_text(duration)
 
 
