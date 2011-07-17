@@ -262,16 +262,6 @@ class RacerHandler(BaseHandler):
         self.redirect("/myraces")
 
 
-class UTCMigrater(webapp.RequestHandler):
-    def get(self):
-        q = Race.all()
-        for race in q:
-            race.start_time = util.cet_as_utc(race.start_time)
-            race.finish_time = util.cet_as_utc(race.finish_time)
-            race.put()
-        self.response.out.write("DONE!")
-
-
 def main():
     webapp.template.register_template_library('filters')
     
@@ -286,7 +276,6 @@ def main():
                                         ('/myraces', MyRaces),
                                         ('/info', Information),
                                         ('/racers/(.*)', RacerHandler),
-                                        ('/convert_to_utc', UTCMigrater),
                                         ('/racers', RacersHandler)],
                                          debug=True)
     google.appengine.ext.webapp.util.run_wsgi_app(application)
