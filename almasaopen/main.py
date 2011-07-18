@@ -216,8 +216,9 @@ class RemoveRace(BaseHandler):
         self.render("remove.html", race=race)
 
     def post(self, race_id):
-        if self.current_racer:
-            db.get(race_id).delete()
+        race = db.get(race_id)
+        if self.current_racer == race.racer:
+            race.delete()
         self.redirect('/?fail=Lopp raderat.')
 
 
