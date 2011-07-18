@@ -4,21 +4,21 @@
 
 <div id="really_remove">
 	Vill du verkligen radera detta loppet?
-	<form action="/removerace/{{id}}" method="post" accept-charset="utf-8">
+	<form action="/removerace/{{ race.key }}" method="post" accept-charset="utf-8">
 		<p><input type="submit" value="RADERA"></p>
 	</form>
 </div>
 <hr/>
 <div id="race_images">
-	<h2>{{username}}</h2><h2>{{start_time|formatd}}</h2>
+	<h2>{{ race.racer.nickname|escape }}</h2><h2>{{ race.start_time|formatd }}</h2>
 	<div class="race_images_inner">
 		<p>Startfoto</p>
-		<img src="/races/{{ id }}/photos/start" alt="Startfoto" />
+		<img src="/races/{{ race.key }}/photos/start" alt="Startfoto" />
 	</div>
 	<div class="race_images_inner">
 		<p>Målfoto</p>
-		<img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
+		<img src="/races/{{ race.key }}/photos/finish" alt="Målfoto" />
 	</div>
-	<h2>Totaltid: {{ total_time|format }}!</h2>
+	<h2>Totaltid: {{ race.total_time|format }}!</h2>
 </div>
 {% endblock %}

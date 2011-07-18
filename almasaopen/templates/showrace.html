@@ -32,7 +32,7 @@
           </div>
           <div class="delete grid_1 omega">
             {% ifequal comment.racer current_racer %}
-            <form action="/races/{{ id }}/comments/{{ comment.key }}" method="post" accept-charset="utf-8">
+            <form action="/races/{{ race.key }}/comments/{{ comment.key }}" method="post" accept-charset="utf-8">
               <input type="submit" value="Radera">
             </form>
             {% endifequal %}
@@ -46,7 +46,7 @@
         <div class="clear"></div>
     {% endfor %}
     {% if current_racer %}
-    <form id="commentform" action="/races/{{ id }}/comments" method="post" accept-charset="utf-8">
+    <form id="commentform" action="/races/{{ race.key }}/comments" method="post" accept-charset="utf-8">
         <textarea name="comment" placeholder="Kommentera loppet!"></textarea>
     <p><input type="submit" value="Kommentera"></p>
     </form>
@@ -58,10 +58,10 @@
 <div id="race-photos" class="grid_6">
     <h3>Före &amp; Efter</h3>
     <div id="start-photo" class="grid_3 alpha">
-      <img src="/races/{{ id }}/photos/start" alt="Startfoto" />
+      <img src="/races/{{ race.key }}/photos/start" alt="Startfoto" />
     </div>
     <div id="finish-photo" class="grid_3 omega">
-      <img src="/races/{{ id }}/photos/finish" alt="Målfoto" />
+      <img src="/races/{{ race.key }}/photos/finish" alt="Målfoto" />
     </div>
 </div>
 

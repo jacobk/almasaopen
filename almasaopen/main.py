@@ -2,14 +2,12 @@
 import calendar
 import datetime
 import email.utils
-import logging
 import os
 
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import template
 import google.appengine.ext.webapp.util
 from google.appengine.api import images, users
-from google.appengine.ext.webapp.util import login_required
 
 # TODO: Move vogel to vendor
 import jpeg
@@ -84,15 +82,14 @@ class BaseHandler(webapp.RequestHandler):
         self._current_user = current_user
         return self._current_user
 
+
 class MainHandler(BaseHandler):
     def get(self):
         leader, runner_ups, noobs = self.make_scoreboard()
         fail = self.request.get("fail", None)
-        login = users.create_login_url('/')
-        home = True
-        template_values = locals()
-        template_values.pop("self")
-        self.render("index.html", **template_values)
+        login=users.create_login_url('/')
+        self.render("index.html", leader=leader, runner_ups=runner_ups,
+                    noobs=noobs, fail=fail, login=login, home=True)
 
     def make_scoreboard(self):
         races = Race.all()
@@ -208,37 +205,26 @@ class RaceHandler(BaseHandler):
     """Handler to show a specific race"""
     def get(self, race_id):
         race = db.get(race_id)
-        template_values = {}
-        template_values['id'] = race_id
-        template_values['comments'] = race.comments.order("-time")
-        template_values['race'] = race
-        self.render("showrace.html", **template_values)
+        comments = race.comments.order("-time")
+        self.render("showrace.html", race=race, comments=comments)
 
 
 class RemoveRace(BaseHandler):
     """Handler for removing a race from the datastore"""
-    def get(self, *ar):
-        race = db.get(ar[0])
-        template_values = {}
-        template_values['id'] = ar[0]
-        template_values['username'] = race.racer.nickname
-        template_values['start_time'] = race.start_time
-        template_values['finish_time'] = race.finish_time
-        template_values['total_time'] = race.total_time
-        
-        self.render("remove.html", **template_values)
+    def get(self, race_id):
+        race = db.get(race_id)
+        self.render("remove.html", race=race)
 
-    def post(self, *ar):
+    def post(self, race_id):
         if self.current_racer:
-            db.get(ar[0]).delete()
+            db.get(race_id).delete()
         self.redirect('/?fail=Lopp raderat.')
 
 
 class Information(BaseHandler):
     """Handler for the information page"""
     def get(self):
-        template_values = {}
-        self.render("info.html", **template_values)
+        self.render("info.html")
 
 
 class RacersHandler(BaseHandler):
@@ -268,7 +254,6 @@ class RacerHandler(BaseHandler):
 
 def main():
     webapp.template.register_template_library('filters')
-    
     application = webapp.WSGIApplication([('/', MainHandler),
                                         ('/upload', UploadHandler),
                                         ('/races/([^/]*)/photos/start', StartPhotoHandler),
