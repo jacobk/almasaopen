@@ -161,7 +161,7 @@ class UploadHandler(BaseHandler):
 
 class BasePhotoHandler(BaseHandler):
     """Handler for getting an image from the datastore"""
-    def serve_photo(self, race_id, photo_type):
+    def get(self, race_id):
         race = db.get(race_id)
         self.response.headers["Content-Type"] = 'image/jpeg'
         d = datetime.datetime.utcnow() + datetime.timedelta(days=365*10)
@@ -169,17 +169,20 @@ class BasePhotoHandler(BaseHandler):
         self.response.headers["Expires"] = email.utils.formatdate(t,
                                                   localtime=False, usegmt=True)
         self.response.headers["Cache-Control"] = "max-age=" + str(86400*365*10)
-        self.response.out.write(getattr(race, photo_type))
+        self.response.out.write(self.photo(race))
+
+    def photo(self, race):
+        raise NotImplementedError
 
 
 class StartPhotoHandler(BasePhotoHandler):
-    def get(self, race_id):
-        self.serve_photo(race_id, "start_photo")
+    def photo(self, race):
+        return race.start_photo
 
 
 class FinishPhotoHandler(BasePhotoHandler):
-    def get(self, race_id):
-        self.serve_photo(race_id, "finish_photo")
+    def photo(self, race):
+        return race.finish_photo
 
 
 class CommentsHandler(BaseHandler):
