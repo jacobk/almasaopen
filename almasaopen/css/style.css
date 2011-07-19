@@ -230,6 +230,7 @@ a:active { color: #333 }
 #scoreboard .leader .avatar {
   height: 140px;
   width: 140px;
+  background-size: cover;
 }
 
 #scoreboard .leader .timestamp {
