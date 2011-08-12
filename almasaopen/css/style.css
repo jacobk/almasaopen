@@ -341,6 +341,20 @@ a:active { color: #333 }
   line-height: 30px;
 }
 
+
+/* News */
+#blogg .bullet {
+    height: 60px;
+    font-family: 'Podkova', sans-serif;
+    line-height: 60px;
+    text-align: center;
+    width: 58px;
+    border-left: 1px solid #f1f0ee;
+    border-right: 1px solid #f1f0ee;
+    font-size: 57px;
+
+}
+
 /* Registration */
 
 #registration #fail .bullet {
