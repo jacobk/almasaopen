@@ -1,6 +1,6 @@
-# The Amazing Appengine Based Road Competition Framework!
+# Appengine Based Road Competition App
 
-We did it before it was cool.
+Minimal app to create simple photo-timestamp-based road races.
 
 ## License
 
