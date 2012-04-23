@@ -95,21 +95,22 @@ class MainHandler(BaseHandler):
         dt = datetime.datetime(2012,4,23)
         races = Race.all()
         races.filter("start_time > ", dt)
-        races.order("start_time")
-        races.order("total_time")
+        # races.order("start_time")
+        # races.order("total_time")
         shit_list = []
         race_list = []
         for race in races:
             if race.racer not in shit_list:
                 shit_list.append(race.racer)
                 race_list.append(race)
-        for i, race in enumerate(race_list):
+
+        return_list = sorted(race_list, key=lambda race: race.total_time)
+        for i, race in enumerate(return_list):
             race.position = i + 1
         try:
-            return race_list[0:1][0], race_list[1:5], race_list[5:]
+            return return_list[0:1][0], return_list[1:5], return_list[5:]
         except IndexError:
             return None, [], []
-
 
 class UploadHandler(BaseHandler):
     """Handler for adding a race to the datastore"""
