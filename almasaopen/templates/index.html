@@ -81,7 +81,7 @@
   <div id="blogg">
       <!-- Blogg entry -->
       <div class="message grid_6 alpha">
-        <p>Stort grattis till <strong>Ola</strong> som tog hem segern i förra årets Almåsa Öppna!</p>
+        <p>Stort grattis till <span style="font-weight:bold;font-size:30px">Ola</span> som tog hem segern i förra årets Almåsa Öppna!</p>
         <p>Det är kul att tävligen har fått så pass bra respons. Nu börjar den om, det är samma bana som körs och det är samma regler som gäller.</p>
         <p>Samtliga tider ni hade förra året finns kvar, men topplistan nollställs.</p>
         <p>Lycka till och ha kul!</p>
@@ -129,6 +129,25 @@
       </div>
     </div>
     <div class="clear"></div>
+  {% else %}
+      <div class="entry leader">
+        <div class="avatar grid_2 alpha" 
+             style='background: #ddd;'>
+        </div>
+        <div class="slider grid_4 omega">
+          <!-- default content -->
+          <div class="timestamp">
+              1:23:45
+          </div>
+          <div class="name">Roger Miller</div>
+          <div class="byline">Vägens konung sedan urminnes tider!</div>
+          <!-- hover content -->
+          <div class="extra-info" style="height: 140px">
+            Fortfarande ingen som cyklat! Så ge fan i att refresha sidan och gå ut och cykla själv! Kanske den ända chansen du har på förstaplatsen ;)
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
   {% endif %}
   {% for runner_up in runner_ups %}
   <div class="entry runner-up">
