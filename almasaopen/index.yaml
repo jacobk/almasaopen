@@ -21,3 +21,8 @@ indexes:
   - name: racer
   - name: start_time
     direction: desc
+
+- kind: Race
+  properties:
+  - name: start_time
+  - name: total_time

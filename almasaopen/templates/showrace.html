@@ -10,9 +10,9 @@
 
 {% block content %}
 <div id="race-view" class="grid_6">
-  <h3>Tjik!</h3>
+  <h3>Racet!</h3>
   <p>
-    Året var {{race.start_time|formaty}}. {{race.racer.nickname|escape}} begav sig den {{race.start_time|formatdvsy}} ut på en gastkramande färd genom den skånska myllan, över kullar och genom skogar. {{race.racer.nickname|escape}} påbörjade sin färd klockan {{race.start_time|formatt}} och den varade ända tills klockan {{race.finish_time|formatt}}. Hela resan varade, rätt exakt, i {{race.total_time|format}} timmar, minuter och sekunder. Cool story bro!
+    Den {{race.start_time|formatdvsy}} klockan {{race.start_time|formatt}} började {{race.racer.nickname|escape}} sin resa runt Almåsa. Efter {{race.total_time|format}} var mållinjen korsad (måltid {{race.finish_time|formatt}}).
   </p>
     {% if race.extra %}
     <p id="extralink">{{ race.extra|escape }}</p>

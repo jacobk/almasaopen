@@ -92,7 +92,10 @@ class MainHandler(BaseHandler):
                     noobs=noobs, fail=fail, login=login, home=True)
 
     def make_scoreboard(self):
+        dt = datetime.datetime(2012,4,23)
         races = Race.all()
+        races.filter("start_time > ", dt)
+        races.order("start_time")
         races.order("total_time")
         shit_list = []
         race_list = []
